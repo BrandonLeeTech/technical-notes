@@ -1,8 +1,9 @@
 site_name: 自動化測試教學筆記
 site_description: 測試自動化、環境建置與 DevOps 維護筆記
+site_url: https://brandonleetech.github.io/technical-notes/
 repo_url: https://github.com/BrandonLeeTech/technical-notes
 repo_name: GitHub
-use_directory_urls: false
+
 theme:
   name: material
   language: zh-TW
@@ -13,7 +14,7 @@ theme:
     - toc.integrate  # 將目錄整合進主要區域
 
 nav:
-  - 首頁: index.md
+  - 首頁: https://brandonleetech.github.io/technical-notes/index.html
   - 測試自動化:
       - 框架介紹: notes-automation/auto-framework.md
       - 腳本架構: notes-automation/auto-scripts-structure.md

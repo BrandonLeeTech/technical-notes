@@ -1,4 +1,4 @@
-# Docker 設定
+# Docker
 
 ---
 
@@ -11,7 +11,7 @@
 2. 虛擬機環境 (Linux 核心)
 
 
-## Docker 安裝
+## Install Docker
 
 ---
 
@@ -27,7 +27,7 @@
 
 </aside>
 
-### 1. 更新系統套件
+### 1. Update System Packages
 
 開啟一個 terminal 窗口，並先更新系統套件，過程中要輸入使用者密碼
 
@@ -38,7 +38,7 @@ sudo apt upgrade -y
 
 ![image.png](../images/Docker_1.png)
 
-### 2. 安裝必要的套件
+### 2. Install Required Packages
 
 ```bash
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
@@ -46,7 +46,7 @@ sudo apt install apt-transport-https ca-certificates curl software-properties-co
 
 ![image.png](../images/Docker_2.png)
 
-### 3. 新增 Docker 的 GPG 金鑰和倉庫
+### 3. Add the Docker GPG Key and Repository
 
 使用以下指令新增 Docker 官方的 GPG 金鑰和軟體倉庫：
 
@@ -58,7 +58,7 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 
 ![image.png](../images/Docker_3.png)
 
-### 4. 安裝 Docker 引擎
+### 4. Install Docker Engine
 
 更新套件列表並安裝 Docker CE（Community Edition）。
 
@@ -69,7 +69,7 @@ sudo apt install docker-ce -y
 
 ![image.png](../images/Docker_4.png)
 
-### 5. 啟動 Docker 並設置開機自動啟動
+### 5. Start Docker and Enable the Service
 
 ```bash
 sudo systemctl start docker
@@ -78,7 +78,7 @@ sudo systemctl enable docker
 
 ![image.png](../images/Docker_5.png)
 
-### 6. 驗證 Docker 是否安裝成功
+### 6. Verify the Docker Installation
 
 ```bash
 docker --version
@@ -89,7 +89,7 @@ sudo docker run hello-world
 
 ![image.png](../images/Docker_6.png)
 
-### 7. 授權給非 root 使用者
+### 7. Grant Docker Access to a Non-Root User
 
 預設情況下 Docker 需要 `sudo` 權限，可以將使用者加入 `docker` 群組
 
@@ -103,7 +103,7 @@ sudo usermod -aG docker $USER
 
 ![image.png](../images/Docker_7.png)
 
-### 8. 安裝 Docker Compose
+### 8. Install Docker Compose
 
 Docker Compose 是用來定義和管理多個容器應用的工具。
 
@@ -123,7 +123,7 @@ docker-compose --version
 
 
 
-## Dockerfile + Docker_Compose
+## Docker Compose
 
 ---
 

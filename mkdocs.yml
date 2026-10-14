@@ -1,5 +1,5 @@
-site_name: 自動化測試教學筆記
-site_description: 測試自動化、環境建置與 DevOps 維護筆記
+site_name: QA Automation Notes
+site_description: Practical notes on Appium test automation, API testing, ADB troubleshooting, Docker, Python environments, and CI/CD.
 site_url: https://brandonleetech.github.io/technical-notes/
 repo_url: https://github.com/BrandonLeeTech/technical-notes
 repo_name: GitHub
@@ -14,21 +14,21 @@ theme:
     - toc.integrate  # 將目錄整合進主要區域
 
 nav:
-  - 首頁: https://brandonleetech.github.io/technical-notes/index.html
-  - 測試自動化:
-      - 框架介紹: notes-automation/auto-framework.md
-      - 腳本架構: notes-automation/auto-scripts-structure.md
-      - Log & Report 查看: notes-automation/test-log-report.md
-      - ADB 問題: notes-automation/test-adb.md
-      - API 測試: notes-automation/test-api.md
+  - Home: https://brandonleetech.github.io/technical-notes/index.html
+  - Test Automation:
+      - Appium Test Automation: notes-automation/auto-framework.md
+      - Test Automation Architecture: notes-automation/auto-scripts-structure.md
+      - Test Reporting: notes-automation/test-log-report.md
+      - ADB Troubleshooting: notes-automation/test-adb.md
+      - API Testing: notes-automation/test-api.md
       - Streamlit + PyInstaller: notes-automation/streamlit_pyinstaller_tutorial.md
-  - 環境與部署:
-      - Docker 設定: notes-env/docker-guide.md
-      - Python 環境設定: notes-env/python-env-setup.md
-      - VM 使用: notes-env/vm-setup.md
+  - Environment & Deployment:
+      - Docker: notes-env/docker-guide.md
+      - Python Environment: notes-env/python-env-setup.md
+      - VirtualBox VM: notes-env/vm-setup.md
   - DevOps:
-      - 建構 GitLab Runner: notes-devops/gitlab-runner.md
-      - CI/CD: notes-devops/ci-cd.md
+      - GitLab Runner: notes-devops/gitlab-runner.md
+      - CI/CD Pipeline: notes-devops/ci-cd.md
 
 extra_css:
   - css/custom.css

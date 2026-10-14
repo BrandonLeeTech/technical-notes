@@ -1,4 +1,4 @@
-# Python 環境設定
+# Python Environment
 
 ---
 

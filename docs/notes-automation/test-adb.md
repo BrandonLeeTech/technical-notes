@@ -1,16 +1,16 @@
-# ADB 問題
+# ADB Troubleshooting
 
 > device unauthorized 問題解決
 
 ---
 
-## **無法跳出 USB 授權彈窗**
+## USB Debugging Authorization Dialog Does Not Appear
 
 如果你的 Android 設備沒有彈出「**允許 USB 調試？**」對話框（如下圖），那麼可能是 `adb` 金鑰 (`adbkey`) 沒有正確生成。
 
 ![image.png](../images/ADB 問題_1.png)
 
-### **可能原因**
+### Possible Causes
 
 1. **`adbkey` 生成失敗**
     
@@ -25,7 +25,7 @@
     - 使用 `adb kill-server` 關閉舊的 adb 進程，然後 `adb start-server` 重新啟動。
     - 確保 `adb` 版本是最新的，執行 `adb version` 檢查。
 
-### **手動修復 `adbkey`**
+### Manually Reset the `adbkey`
 
 如果 `adbkey` 沒有自動生成，你可以手動修復：
 
@@ -46,7 +46,7 @@
 
 
 
-## 常用的解決 adb offline 方法
+## Resolve the `adb offline` State
 
 `adb kill-server
  adb usb
@@ -61,7 +61,7 @@
 
 
 
-## `adb` 無法獲取 USB 裝置的控制權
+## `adb` Cannot Access the USB Device
 
 可能是主機 (Ubuntu) 上的 `adb server` 已經在使用該設備
 

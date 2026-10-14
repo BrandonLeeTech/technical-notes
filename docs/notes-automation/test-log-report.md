@@ -1,4 +1,4 @@
-# Log & Report
+# Test Reporting
 
 > 介紹如何分析和管理測試結果，包括查看 Appium 日誌和生成日誌以進行問題排查
 
@@ -11,7 +11,7 @@
 
 
 
-## logs (Appium Server log)
+## Appium Server Logs
 
 ---
 
@@ -75,7 +75,7 @@ GET /wd/hub/session/81a54518-8903-4e77-b54e-786cafaa78ed/element/00000000-0000-0
     
 
 
-## screenshots
+## Screenshots
 
 ---
 
@@ -95,7 +95,7 @@ GET /wd/hub/session/81a54518-8903-4e77-b54e-786cafaa78ed/element/00000000-0000-0
 
 
 
-## Test_Report
+## Test Report
 
 ---
 
@@ -120,7 +120,7 @@ root\utils\data_import.py：管理 “數據驅動” 導入 (Test_Config.xlsx /
 
 
 
-## 定義 Error_code
+## Define Error Codes
 
 ---
 

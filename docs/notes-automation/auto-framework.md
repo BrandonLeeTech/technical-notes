@@ -1,11 +1,11 @@
-# 自動化框架
+# Appium Test Automation
 
 ---
 
 > 介紹如何下載並設置必要的工具和軟體，確保編寫自動化測試腳本的環境配置完備
 > 
 
-## Appium 原理
+## Appium Architecture
 
 <aside>
 💡
@@ -19,7 +19,7 @@ Appium 啟動一個 Server (預設 port: 4723) 用來接口 Client 端的 rest �
 
 ![](../images/external/aa541f24e887.png)
 
-## 安裝項目
+## Prerequisites
 
 ---
 
@@ -31,7 +31,7 @@ Appium 啟動一個 Server (預設 port: 4723) 用來接口 Client 端的 rest �
 - Appium Inspector： 幫助測試人員查看應用中的元素屬性的 GUI 工具
 - Appium-Python-Client：用於讓 Python 和 Appium Server 進行通信。
 
-## 安裝步驟
+## Installation Steps
 
 ---
 
@@ -40,7 +40,7 @@ Appium 啟動一個 Server (預設 port: 4723) 用來接口 Client 端的 rest �
 > 選一個文字編輯器或是 IDE 用來撰寫腳本
 > 
 
-#### 1. 下載 [VSCode](https://code.visualstudio.com/download)
+#### 1. Download [VS Code](https://code.visualstudio.com/download)
 
 照畫面指示步驟下載即可
 
@@ -48,7 +48,7 @@ Appium 啟動一個 Server (預設 port: 4723) 用來接口 Client 端的 rest �
 
 ![](../images/external/d1e522d63d9e.png)
 
-#### 2. 編輯第一個文件
+#### 2. Create Your First Python File
 
 點擊 File 裡的 New Text File 新增一個文本
 
@@ -71,7 +71,7 @@ Appium 啟動一個 Server (預設 port: 4723) 用來接口 Client 端的 rest �
 > 為了運行 Appium 和 Android 模擬器，首先需要安裝 JDK。
 > 
 
-#### 1. 下載 [Java SDK](https://www.oracle.com/java/technologies/downloads/)
+#### 1. Download [Java SDK](https://www.oracle.com/java/technologies/downloads/)
 
 建議下載 JDK17 或 JDK21
 
@@ -87,7 +87,7 @@ Appium 啟動一個 Server (預設 port: 4723) 用來接口 Client 端的 rest �
 
 ![](../images/external/367f8290434f.png)
 
-#### 2. 設置環境變數
+#### 2. Configure Environment Variables
 
 點擊 windows+R 開啟對話框並輸入 『sysdm.cpl』
 
@@ -125,7 +125,7 @@ Path 變數設定完成，接下來點選『確定』就設定完成 Java 開發
 > Appium 需要依賴 Node.js。
 > 
 
-#### 1. 下載與安裝 [Node js](https://nodejs.org/en/)
+#### 1. Install [Node.js](https://nodejs.org/en/)
 
 建議選擇最新的 LTS 版本安裝 如圖片中的 v20.17.0(LTS)
 
@@ -143,7 +143,7 @@ Chocolatey：Windows 的套件管理工具，它簡化了 Python 和其他開發
 
 ![](../images/external/054ef92d95b4.png)
 
-#### 2. 設置環境變數
+#### 2. Configure Environment Variables
 
 安裝完成會自動添加 node.js 及 npm 的路徑到環境
 
@@ -155,7 +155,7 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/6362e72da959.png)
 
-#### 3. 驗證是否可運行
+#### 3. Verify the Installation
 
 在 cmd 中分別輸入 `node -v` 和 `npm -v` 確認版本
 
@@ -180,7 +180,7 @@ npm 是 node 的套件管理系統會預設安裝
 > 開發和測試 Android 應用所需的工具和資源。
 > 
 
-#### 1. 下載與安裝 [Android Studio](https://developer.android.com/studio?hl=zh-tw)
+#### 1. Install [Android Studio](https://developer.android.com/studio?hl=zh-tw)
 
 建議安裝 如果習慣 cli 操作或希望保持輕量級環境可以略過
 
@@ -204,7 +204,7 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/2f20ea8ec586.png)
 
-#### 2. 下載SDK Tool
+#### 2. Install SDK Tools
 
 下載完打開 Android studio
 
@@ -232,7 +232,7 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/35625905f6ec.png)
 
-#### 3. 設置環境變數
+#### 3. Configure Environment Variables
 
 新增 Android SDK 的安裝目錄到系統變量
 
@@ -246,7 +246,7 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/0960bdea48e5.png)
 
-#### 4. 驗證是否可運行
+#### 4. Verify the Installation
 
 在任何命令提示字元( e.g.cmd )輸入 `adb devices`
 
@@ -259,7 +259,7 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/217710c6db37.png)
 
-#### 5. 檢查
+#### 5. Check the Environment
 
 用 npm 安裝 appium-doctor
 
@@ -276,7 +276,7 @@ npm 是 node 的套件管理系統會預設安裝
 > 介紹如何通過 npm 安裝 Appium。
 > 
 
-#### 1. 下載與安裝 [Appium Server GUI](https://github.com/appium/appium-desktop/releases/tag/v1.6.3)
+#### 1. Install [Appium Server GUI](https://github.com/appium/appium-desktop/releases/tag/v1.6.3)
 
 如果不用 GUI 可以略過
 
@@ -292,7 +292,7 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/31d7e4d16bdf.png)
 
-#### 2. 驗證是否可運行
+#### 2. Verify the Installation
 
 輸入 `appium -v` 確認版本
 
@@ -300,7 +300,7 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/cca12de86294.png)
 
-#### 3-1. 配置端口資訊
+#### 3-1. Configure Server Settings
 
 Appium Desktop: 打開下載的 GUI 介面
 
@@ -338,7 +338,7 @@ Appium Desktop: 打開下載的 GUI 介面
 
 設置完點擊 “Save As Preset” 之後方便直接從 Presets 選單調用設置
 
-#### 3-2. 配置端口資訊
+#### 3-2. Start the Appium Server
 
 cmd: 直接輸入`appium`
 
@@ -351,7 +351,7 @@ cmd: 直接輸入`appium`
 > 介紹如何安裝 Appium Inspector 工具來檢測 UI 元素。                                                       Appium Desktop 升級到 1.22 版本後，Server 跟 Inspector 已經分開
 > 
 
-#### 1. 下載與安裝 [Appium Inspector](https://github.com/appium/appium-inspector/releases)
+#### 1. Install [Appium Inspector](https://github.com/appium/appium-inspector/releases)
 
 Windows 系統可下載最新版本的.exe檔
 
@@ -361,7 +361,7 @@ Windows 系統可下載最新版本的.exe檔
 
 ![](../images/external/d46cc2798b33.png)
 
-#### 2. Appium Inspector 配置
+#### 2. Configure Appium Inspector
 
 ![](../images/external/442a4f5744ab.png)
 
@@ -404,7 +404,7 @@ appPackage 跟 appActivity 在 Appium2.0 版本後為了提升命名的辨識度
 > Appium 與腳本互動時 必須調用 Client 端和 Appium Server 進行通信(e.g.Appium_Python_Client)  而 Appium_Python_Client 用 pip 下載最不容易出錯
 > 
 
-#### 1. 下載 [Python](https://www.python.org/downloads/)
+#### 1. Download [Python](https://www.python.org/downloads/)
 
 ![](../images/external/0aeb57c813a7.png)
 
@@ -424,7 +424,7 @@ appPackage 跟 appActivity 在 Appium2.0 版本後為了提升命名的辨識度
 
 我的 pip 放在 C:裡，所以 path 變數要加上這個路徑
 
-#### 2. 設置 VSCode 裡的直譯器
+#### 2. Select the Python Interpreter in VS Code
 
 回到 VSCode
 
@@ -436,7 +436,7 @@ appPackage 跟 appActivity 在 Appium2.0 版本後為了提升命名的辨識度
 
 python 是直譯式語言，編輯的每一行轉成電腦可理解的 Byte Code 去執行，這也會導致輸出結果較慢
 
-#### 3. 下載 Appium-Python-Client
+#### 3. Install Appium-Python-Client
 
 cmd 輸入 `pip -V`
 
@@ -452,7 +452,7 @@ cmd 輸入 `pip -V`
 
 ![](../images/external/c4cee62cd16c.png)
 
-#### 4. 檢查 VSCode 有無報錯
+#### 4. Check for Errors in VS Code
 
 回到VSCode
 

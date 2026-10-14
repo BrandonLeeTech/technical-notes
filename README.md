@@ -1,8 +1,12 @@
-# 自動化測試教學筆記
+# QA Automation Notes: Appium, API Testing, Docker & CI/CD
 
-使用 MkDocs Material 維護 QA 自動化測試、環境建置與 DevOps 筆記，並透過 GitHub Actions 部署至 GitHub Pages。
+這個 repository 收錄 Appium 自動化測試、API 測試、測試報告、Android ADB 疑難排解、Python 與 Docker 環境，以及 CI/CD 維護筆記。
 
-## 本機預覽
+## View the Notes
+
+Browse the published notes on [QA Automation Notes](https://brandonleetech.github.io/technical-notes/).
+
+## Local Preview
 
 ```bash
 python -m venv .venv
@@ -11,21 +15,19 @@ pip install -r requirements.txt
 mkdocs serve
 ```
 
-瀏覽器開啟 `http://127.0.0.1:8000`。正式建置與連結檢查：
+Open `http://127.0.0.1:8000` in a browser. To build the site locally:
 
 ```bash
 mkdocs build --strict
 ```
 
-## 部署
+## Deployment
 
-Pull request 與推送至 `main` 都會執行建置檢查。要發布網站，需在 **Settings → Pages → Build and deployment** 將 **Source** 設為 **GitHub Actions**，並在 **Settings → Secrets and variables → Actions → Variables** 新增 `PUBLISH_PAGES=true`。未設定這個變數時，工作流程只會建置，不會部署頁面。
+Pull requests and pushes to `main` run the build checks. To publish the site, set **Settings → Pages → Build and deployment → Source** to **GitHub Actions**, then add the Actions repository variable `PUBLISH_PAGES=true` under **Settings → Secrets and variables → Actions → Variables**. Without this variable, the workflow builds the site but does not publish it.
 
-Repository：[BrandonLeeTech/technical-notes](https://github.com/BrandonLeeTech/technical-notes)。啟用 Pages 後，部署網址會顯示在 **Settings → Pages** 與 Actions 工作流程結果中。
+## Repository Structure
 
-## 內容結構
-
-- `docs/`: Markdown 筆記與圖片
-- `mkdocs.yml`: 網站主題與導覽
-- `.github/workflows/pages.yml`: GitHub Actions 建置與部署
-- `requirements.txt`: MkDocs 建置依賴
+- `docs/`: Markdown notes and images
+- `mkdocs.yml`: MkDocs theme and navigation
+- `.github/workflows/pages.yml`: GitHub Actions build and deployment workflow
+- `requirements.txt`: MkDocs build dependencies

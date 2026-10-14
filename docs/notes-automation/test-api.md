@@ -1,4 +1,4 @@
-# API 測試
+# API Testing
 
 ---
 
@@ -10,7 +10,7 @@
 1. 獨立運行一個終端作為 Server
 2. 執行測試腳本(Client)以發起 API 請求，並與 Server 進行交互
 
-## 腳本架構
+## Project Structure
 
 ---
 
@@ -23,7 +23,7 @@ Project/api
 ├─ start_server.py     模擬資料存儲的本地 Server
 └─ test_data.py         測試數據 (e.g. 註冊電話)
 
-## 執行測試
+## Run Tests
 
 ---
 
@@ -51,7 +51,7 @@ Server 內會顯示儲存跟提取的相關紀錄可以查看
 
 ![image.png](../images/API 測試_5.png)
 
-## Socket 設計
+## Socket Design
 
 ---
 

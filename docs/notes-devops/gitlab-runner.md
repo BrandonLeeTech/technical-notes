@@ -5,7 +5,7 @@
 
 ---
 
-## 官網下載位置
+## Download GitLab Runner
 
 ---
 

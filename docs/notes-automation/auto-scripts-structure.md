@@ -1,4 +1,4 @@
-# 腳本架構
+# Test Automation Architecture
 
 > 介紹自動化測試腳本的架構
 
@@ -14,7 +14,7 @@
 
 
 ```markdown
-### 📁 腳本架構（API 測試）
+### 📁 API Test Script Structure
 
 | 資料夾 / 檔案         | 說明 |
 |----------------------|------|
@@ -29,11 +29,11 @@
 
 
 
-## 範本
+## Project Template
 
 ---
 
-### step0. 根目錄
+### Step 0: Project Root
 
 下載源代碼到 Windows 本機端 C 槽
 
@@ -41,7 +41,7 @@
 
 ![images/腳本架構_1.png](../images/腳本架構_1.png)
 
-### step1. 數據驅動
+### Step 1: Data-Driven Testing
 
 根目錄下方的 Scripts.xlsx 負責記錄測試按鈕的元素值 (這個檔案下的定位方式僅為記錄用)
 
@@ -104,7 +104,7 @@ Test_Config.xlsx 下第一張資料表 Device&App_Config 設計為 Appium Driver
 
 ![images/腳本架構_1.png](../images/腳本架構_9.png)
 
-### step2. 操作模組化
+### Step 2: Modularize Actions
 
 根目錄下方 scripts 子資料夾，存放與 app 直接操作(連線)相關的模組
 
@@ -222,7 +222,7 @@ click_times 變數預設為點擊一次
 
 ![images/腳本架構_1.png](../images/腳本架構_19.png)
 
-### step3. 頁面模組化
+### Step 3: Modularize Pages
 
 根目錄下方 pages 子資料夾區分商家端跟打工端，有各自 App 對應的頁面測試，並封包成模組
 
@@ -238,7 +238,7 @@ click_times 變數預設為點擊一次
 2. 導入數據驅動並設定要調用哪一組數據
 3. 對頁面編寫測試
 
-## 虛擬環境
+## Virtual Environment
 
 ---
 
@@ -253,7 +253,7 @@ click_times 變數預設為點擊一次
     
 3. 安裝依賴 : `pip install -r requirements.txt`
 
-## 執行測試
+## Run Tests
 
 ---
 

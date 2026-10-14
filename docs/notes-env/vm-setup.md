@@ -1,4 +1,4 @@
-# VM
+# VirtualBox VM
 
 > **在 Linux 內核下驅動 Docker 執行測試**，有兩種常見的做法
 1. **Windows** + Linux 雙系統啟動
@@ -9,14 +9,14 @@
 ---
 
 
-## VirtualBox (VM) 安裝
+## Install VirtualBox
 
 ---
 
 > **VirtualBox** 是由 **Oracle** 開發的 **免費**、**開源** 的虛擬機軟體。 [Oracle VirtualBox](https://www.virtualbox.org/)
 > 
 
-### **1. 下載** VirtualBox
+### 1. Download VirtualBox
 
 下載 VirtualBox 6.11 並安裝：[Download_Old_Builds_6_1 – Oracle VirtualBox](https://www.virtualbox.org/wiki/Download_Old_Builds_6_1)
 
@@ -26,7 +26,7 @@
 
  VirtualBox 7 跟現成 Linux OS Image 不相容
 
-### 2. 下載 Ubuntu VDI 檔
+### 2. Download the Ubuntu VDI Image
 
 下載 Ubuntu 20.04 LTS： [Ubuntu Virtual Machine Images for VirtualBox and VMware](https://www.osboxes.org/ubuntu/#google_vignette)
 
@@ -40,7 +40,7 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
 
 解壓縮下載檔案得到建置好的 .VDI 檔
 
-### 3. 創建 VM
+### 3. Create a Virtual Machine
 
 啟動 VirtualBox 並新增機器 (新增完的機器會顯示在設置右邊，如下圖)
 
@@ -60,7 +60,7 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
 
 ![image.png](../images/VM_6.png)
 
-### 4. 設定 VM
+### 4. Configure the Virtual Machine
 
 點擊創建的 VM 的設定
 
@@ -113,7 +113,7 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
 
 ![image.png](../images/VM_13.png)
 
-#### 其他設定
+#### Additional Settings
 
 - (可需要時再做修改)
     
@@ -168,7 +168,7 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
     ![image.png](../images/VM_18.png)
     
 
-### 5. 新增使用者
+### 5. Add a User
 
 新增使用者前，請確認已更換映像檔的預設密碼。
 
@@ -207,7 +207,7 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
 
 ![image.png](../images/VM_27.png)
 
-### 6. **Guest Additions iso &**  VirtualBox Extension Pack
+### 6. Install the Guest Additions ISO and VirtualBox Extension Pack
 
 > 解決解析度調整、共用剪貼簿、共用資料夾等問題
 > 
@@ -232,7 +232,7 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
 
 ![image.png](../images/VM_32.png)
 
-### 7. 共享資料夾
+### 7. Configure Shared Folders
 
 要讓資料能在 host 機與 guest 機能傳輸可以掛載共享資料夾功能
 
@@ -260,7 +260,7 @@ sudo usermod -aG vboxsf $USER
 
 ![image.png](../images/VM_37.png)
 
-### 8. 設定自動登入與 sudo 權限
+### 8. Configure Automatic Login and `sudo` Access
 
 可以從 GUI 開啟 Automatic Login
 

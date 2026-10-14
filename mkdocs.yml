@@ -2,7 +2,7 @@ site_name: 自動化測試教學筆記
 site_description: 測試自動化、環境建置與 DevOps 維護筆記
 repo_url: https://github.com/BrandonLeeTech/technical-notes
 repo_name: GitHub
-
+use_directory_urls: false
 theme:
   name: material
   language: zh-TW

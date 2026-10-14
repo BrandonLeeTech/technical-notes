@@ -1,0 +1,19 @@
+/* 修改頁面背景 */
+body {
+  background-color: #f9f9f9;
+}
+
+/* 修改導覽列背景 */
+.md-header {
+  background-color: #1a73e8;
+}
+
+.md-header__title {
+  color: white;
+}
+
+/* 解決標題換行問題 */
+.md-typeset h1, .md-typeset h2, .md-typeset h3 {
+  word-break: break-word;
+  white-space: normal;
+}

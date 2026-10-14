@@ -1,0 +1,7 @@
+# 保留 mkdocs.yml
+!mkdocs.yml
+
+# 忽略 MkDocs 建置輸出
+site/
+.venv/
+__pycache__/

@@ -1,35 +1,35 @@
-# Docker
+# Docker 測試環境建置
 
 ---
 
-> **Docker 使用 WSL 2 內核運行時**，若主機系統是 **Windows**，直接訪問 USB 設備會受到限制。這是因為 WSL 2 的 Linux 子系統與主機硬體層隔離，無法直接操作 USB 端口。此外，由於 WSL 2 虛擬網絡環境的設計，主機與 WSL 之間的網絡通訊採用 NAT 模式，無法輕易透過 TCP/UDP 暴露端口來直接與 USB 設備進行串接。
+> 在 Windows 上使用 WSL 2 執行 Docker 時，容器存取 USB 裝置可能受到限制。WSL 2 的 Linux 環境與主機硬體隔離；其 NAT 網路也讓主機與 Linux 環境之間的連線設定較不直接。
 > 
 
-因此選擇在 **Linux** 內核下驅動 Docker 執行測試，有兩種常見的做法
+若測試需要直接連接 USB 裝置，可以改在 Linux 環境中執行 Docker。常見做法有兩種：
 
-1. **Windows + Linux 雙系統啟動**
-2. 虛擬機環境 (Linux 核心)
+1. 在電腦上安裝 Windows 和 Linux，並以雙系統方式啟動。
+2. 建立使用 Linux 核心的虛擬機。
 
 
-## Install Docker
+## 安裝 Docker
 
 ---
 
-> Docker 的核心邏輯是透過 **Dockerfile** 定義應用環境及依賴，生成輕量的容器映像，並利用**Docker Compose** 以簡潔的 YAML 配置文件來編排多容器應用的部署與協作，實現高效的環境管理與一致性。
+> `Dockerfile` 用來定義映像所需的環境與依賴；Docker Compose 則透過 YAML 設定多個容器服務及其協作方式。
 > 
 
-鑒於 Docker 無法完整控制 host 機上的 USB 埠，用虛擬機運行   Docker file 可以標準化測試環境，並且易於擴展
+由於 Docker 容器不一定能直接控制主機的 USB 連接埠，本文採用 Linux 虛擬機執行 Docker，以便標準化測試環境。
 
 <aside>
 💡
 
-使用剛剛設置好的共用剪貼簿功能來安裝
+可使用前一篇設定的共用剪貼簿，在虛擬機內貼上安裝指令。
 
 </aside>
 
-### 1. Update System Packages
+### 1. 更新系統套件
 
-開啟一個 terminal 窗口，並先更新系統套件，過程中要輸入使用者密碼
+開啟終端機並更新系統套件。執行 `sudo` 指令時，系統會要求輸入使用者密碼。
 
 ```bash
 sudo apt update 
@@ -38,7 +38,7 @@ sudo apt upgrade -y
 
 ![image.png](../images/Docker_1.png)
 
-### 2. Install Required Packages
+### 2. 安裝必要套件
 
 ```bash
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
@@ -46,9 +46,9 @@ sudo apt install apt-transport-https ca-certificates curl software-properties-co
 
 ![image.png](../images/Docker_2.png)
 
-### 3. Add the Docker GPG Key and Repository
+### 3. 新增 Docker GPG 金鑰與套件來源
 
-使用以下指令新增 Docker 官方的 GPG 金鑰和軟體倉庫：
+執行以下指令，加入 Docker 的 GPG 金鑰與套件來源：
 
 ```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -58,9 +58,9 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 
 ![image.png](../images/Docker_3.png)
 
-### 4. Install Docker Engine
+### 4. 安裝 Docker Engine
 
-更新套件列表並安裝 Docker CE（Community Edition）。
+更新套件列表，然後安裝 Docker Engine（Community Edition）：
 
 ```bash
 sudo apt update
@@ -69,7 +69,7 @@ sudo apt install docker-ce -y
 
 ![image.png](../images/Docker_4.png)
 
-### 5. Start Docker and Enable the Service
+### 5. 啟動 Docker 並設定開機自動啟動
 
 ```bash
 sudo systemctl start docker
@@ -78,41 +78,41 @@ sudo systemctl enable docker
 
 ![image.png](../images/Docker_5.png)
 
-### 6. Verify the Docker Installation
+### 6. 確認 Docker 安裝結果
 
 ```bash
 docker --version
 sudo docker run hello-world
 ```
 
-第一句的 Unable to find image 是只在地端跟 Dockerhub 中還找不到一個名為 “hello-word” 的映像檔，latest 為 Docker 給每個映像檔預設的標籤，這邊顯示已成功安裝 Docker 
+若輸出中出現 `Unable to find image`，代表本機尚未有該映像，Docker 會嘗試從 Docker Hub 下載。下載並執行 `hello-world` 後若看到成功訊息，即表示 Docker Engine 已可正常執行。
 
 ![image.png](../images/Docker_6.png)
 
-### 7. Grant Docker Access to a Non-Root User
+### 7. 授權一般使用者執行 Docker
 
-預設情況下 Docker 需要 `sudo` 權限，可以將使用者加入 `docker` 群組
+預設情況下，執行 Docker 指令需要 `sudo`。若要以一般使用者執行，可將帳號加入 `docker` 群組：
 
 ```bash
 sudo usermod -aG docker $USER
 ```
 
-重新登入或重啟系統，使設定生效
+登出後重新登入，或重新啟動系統，讓群組設定生效。
 
-可輸入 `groups`查看
+再執行 `groups`，確認輸出中包含 `docker` 群組。
 
 ![image.png](../images/Docker_7.png)
 
-### 8. Install Docker Compose
+### 8. 安裝 Docker Compose
 
-Docker Compose 是用來定義和管理多個容器應用的工具。
+Docker Compose 用來定義及管理多個容器服務。以下指令會下載並安裝 Compose：
 
 ```bash
 sudo curl -L "[https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-$](https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-$)(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-驗證 Docker Compose 是否安裝成功 (可檢查封包的文件大小是否大約 10 M)
+安裝完成後，執行以下指令確認 Compose 版本：
 
 ```bash
 docker-compose --version
@@ -123,33 +123,33 @@ docker-compose --version
 
 
 
-## Docker Compose
+## 使用 Docker Compose 啟動測試容器
 
 ---
 
-> 我在做 docker 封包時有做一個簡易的容器運行架構，可以參考 [/SQATP/vm.git](http://122.147.190.35/SQATP/vm.git)
+> 此測試環境使用簡易的容器架構。相關範例可參考 [`/SQATP/vm.git`](http://122.147.190.35/SQATP/vm.git)。
 > 
 
-主要是透過
+架構中的檔案分工如下：
 
-1. Dockerfile：生成靜態 image，負責安裝必要工具與構建運行環境
-2. docker-compose.yml：用於定義和啟動容器的服務配置
-3. start.sh：啟動 Appium 測試的腳本，通過 docker-compose.yml 引入
+1. `Dockerfile`：安裝必要工具並建立容器映像。
+2. `docker-compose.yml`：定義要啟動的服務及其設定。
+3. `start.sh`：由 Compose 啟動，負責初始化 Appium 測試流程。
 
 <aside>
 ⚠️
 
-同一個連接埠僅可被分配給單一主機使用，這邊需要先分配給虛擬機才能用 start.sh 運行
+同一個 USB 裝置同一時間只能由一個環境控制。執行 `start.sh` 前，請先將裝置連接到虛擬機。
 
 </aside>
 
-(裝置跳出允許連線彈窗要將永久允許選項打勾)
+裝置顯示 USB 偵錯授權視窗時，請勾選「一律允許」並確認授權。
 
-通常共享的資料夾會在 media 下
+虛擬機的共用資料夾通常會掛載在 `/media` 下。
 
 ![image.png](../images/Docker_9.png)
 
-先移到根目錄下，輸入 (我的共享資料夾叫 ubuntu ，專案根目錄叫 VM_worky)
+以下範例先切換到共用資料夾中的專案根目錄。此例的共用資料夾名稱是 `ubuntu`，專案資料夾名稱是 `VM_worky`：
 
 ```bash
 cd /media/sf_ubuntu/VM_worky
@@ -157,7 +157,7 @@ cd /media/sf_ubuntu/VM_worky
 
 ![image.png](../images/Docker_10.png)
 
-使用無緩存模式重新構建 Docker 映像，命名為 `worky-test-image`，輸入
+使用 `--no-cache` 重新建置映像，並將映像命名為 `worky-test-image`：
 
 ```bash
 docker build --no-cache -t worky-test-image:latest .
@@ -165,18 +165,18 @@ docker build --no-cache -t worky-test-image:latest .
 
 ![image.png](../images/Docker_11.png)
 
-執行完畢後可輸入 `docker images` 檢查映像是否建立成功。由於構建需要安裝完整的測試環境，建議先驗證映像是否正常運行，腳本的選單則可直接執行檢測。
+建置完成後，執行 `docker images` 確認映像已建立。由於映像包含完整測試環境，建議先確認映像可正常啟動，再執行測試腳本中的檢查流程。
 
 ![image.png](../images/Docker_12.png)
 
 ![image.png](../images/Docker_13.png)
 
-我設計在容器內啟動 `adb server` 和 `appium server`，以實現與主機的完全隔離，避免主機端和容器端的端口衝突。因此，當使用 `docker-compose` 運行容器時，需確保主機上沒有其他程序（例如 ADB 或 Appium）占用相關的服務端口（如 5037 或 4723）。
+此架構會在容器內啟動 ADB Server 和 Appium Server，讓測試服務與主機分開執行。啟動容器前，請確認主機上沒有其他 ADB 或 Appium 程序占用相關連接埠，例如 `5037` 或 `4723`。
 
 <aside>
 ⚠️
 
-若在容器內運行 ADB 時遇到 USB 權限問題，可以執行以下命令修正權限：
+若容器中的 ADB 無法存取 USB 裝置，可依目前環境的權限需求調整裝置權限。以下是原筆記使用的指令：
 
 ```bash
 sudo chmod -R 777 /dev/bus/usb
@@ -184,17 +184,17 @@ sudo chmod -R 777 /dev/bus/usb
 
 </aside>
 
-目前在 `docker-compose.yml` 中已指定映像名稱，因此在構建映像時，請確保名稱與標籤（tag）正確。例如 ”`worky-test-image:latest`"。
+`docker-compose.yml` 已指定映像名稱，因此建置時請使用相同的名稱與 Tag，例如 `worky-test-image:latest`。
 
 ![image.png](../images/Docker_14.png)
 
-完成映像構建後，可以使用以下指令執行：
+映像建置完成後，執行以下指令啟動容器：
 
 ```bash
 docker-compose up
 ```
 
-這將根據 `docker-compose.yml` 的設定啟動容器，並根據 `start.sh` 文件的內容進行初始化流程，包括：
+Compose 會依照 `docker-compose.yml` 啟動容器，並執行 `start.sh` 中的初始化流程：
 
 1. 啟動 `adb` 服務
 2. 連接設備並檢查狀態

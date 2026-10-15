@@ -1,17 +1,17 @@
-# Streamlit + PyInstaller
+# Streamlit + PyInstaller 打包教學
 
-## 1. What Is Streamlit?
+## 1. Streamlit 是什麼？
 
-[Streamlit](https://streamlit.io/) 是一個讓 Python 開發者能夠快速建立互動式網頁應用的框架，適用於資料科學、機器學習模型展示、測試平台等用途。
+[Streamlit](https://streamlit.io/) 是 Python 網頁應用框架，能協助開發者快速建立互動式介面，常用於資料科學、機器學習模型展示和測試工具。
 
-### Features
-- 不需寫 HTML/CSS/JS
-- 即時預覽修改內容
-- 支援多種互動元件（按鈕、輸入欄、圖表等）
+### Streamlit 的特色
+- 不必自行撰寫 HTML、CSS 或 JavaScript。
+- 修改程式後可以即時預覽結果。
+- 提供按鈕、輸入欄位和圖表等互動元件。
 
 ---
 
-## 2. Create a Basic Streamlit App
+## 2. 建立 Streamlit 應用程式
 
 ```python
 # app.py

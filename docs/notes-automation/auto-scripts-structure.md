@@ -1,20 +1,16 @@
-# Test Automation Architecture
+# 自動化測試腳本架構
 
-> 介紹自動化測試腳本的架構
+> 本文說明如何以資料驅動、操作模組化和頁面模組化，整理 UI 自動化測試腳本。
 
 ---
 
-1. Data-driven testing
-    - 將測試需要的數據用 XLSX 檔導入，例如: HTC 測試、電話號碼等
-    - 將元素資訊用 XLSX 檔導入，例如: "開始”按鈕的 id 值
-2. 操作模組化
-    - 將 App 的頁面操作及邏輯操作模組化，例如: 點擊、生成隨機身分證
-3. 頁面模組化
-    - 以頁面區分腳本，在主測試流程時調用參與 UI 測試的頁面
+1. **資料驅動測試**：將測試資料與元素資訊存放在 XLSX 檔案中，例如測試帳號、電話號碼或「開始」按鈕的元素 ID。
+2. **操作模組化**：將常用的 UI 操作和邏輯封裝成函數，例如點擊按鈕或產生測試資料。
+3. **頁面模組化**：依照應用程式頁面整理操作，讓主測試流程可以呼叫各頁面的測試模組。
 
 
 ```markdown
-### 📁 API Test Script Structure
+### 📁 API 測試腳本目錄
 
 | 資料夾 / 檔案         | 說明 |
 |----------------------|------|
@@ -29,157 +25,147 @@
 
 
 
-## Project Template
+## 專案範本
 
 ---
 
-### Step 0: Project Root
+### 步驟 0：準備專案根目錄
 
-下載源代碼到 Windows 本機端 C 槽
-
-我的專案命名為 Worky_UITest 
+將專案原始碼下載到 Windows 電腦。本範例將專案放在 `C:`，並命名為 `Worky_UITest`。
 
 ![images/腳本架構_1.png](../images/腳本架構_1.png)
 
-### Step 1: Data-Driven Testing
+### 步驟 1：使用資料驅動測試
 
-根目錄下方的 Scripts.xlsx 負責記錄測試按鈕的元素值 (這個檔案下的定位方式僅為記錄用)
+專案根目錄中的 `Scripts.xlsx` 用來記錄測試所需的元素資訊。這些定位資料供腳本查詢使用。
 
-例如：我將 打工端 onboarding 頁面的下一頁記錄在 Scripts.xlsx 第4列
+例如，打工端 onboarding 頁面的「下一頁」按鈕記錄在 `Scripts.xlsx` 第 4 列。
 
-Name 欄位命名為“l1_下一頁” 對應的 wait_id 欄位為 “tw.com.worky.labor.and:id/iv_next”
+`Name` 欄位填入 `l1_下一頁`，對應的 `wait_id` 欄位則填入 `tw.com.worky.labor.and:id/iv_next`。
 
 ![images/腳本架構_1.png](../images/腳本架構_2.png)
 
 ![images/腳本架構_1.png](../images/腳本架構_3.png)
 
-我在執行 onboarding 頁面測試時如果要點擊這個按鈕 
+在 onboarding 頁面測試中要點擊這個按鈕時：
 
-1. 先將 Scripts.xlsx 整個檔案導入頁面測試腳本 
-2. 調用定義好的點擊方法，將腳本的 Name 欄位的值當作變數加入 click_by_locating 函數中
+1. 將 `Scripts.xlsx` 載入頁面測試腳本。
+2. 呼叫既有的點擊方法，並將 `Name` 欄位的值傳入 `click_by_locating` 函數。
 
 ![images/腳本架構_1.png](../images/腳本架構_4.png)
 
 
 <aside>
 💡
-FAQ：欄位的命名格式 
+常見問題：欄位命名方式
 
 </aside>
 
-> Q1: 為甚麼 Name 的欄位要這樣設計?
+> Q1：為什麼要這樣設計 `Name` 欄位？
 > 
 
-> A: 因為腳本讀取的是 `Name` 欄位，所以必須設計為唯一值，可以將哪個 page 調用當成前綴
+> A：腳本會依照 `Name` 欄位查找元素，因此每個值都必須唯一。可以在名稱前加上頁面代號，避免不同頁面的元素名稱重複。
 > 
 
-> Q2: 其他的欄位怎麼設計?
+> Q2：其他欄位要如何命名？
 > 
 
-> A: 除了 `Name` 跟 `wait_id` 受格式規範，其他皆為自定義，功能僅為方便查詢，可用頁面模組名稱來命名
+> A：除 `Name` 和 `wait_id` 外，其餘欄位可依團隊需求命名，主要用來補充說明或方便查詢。也可以使用對應的頁面模組名稱。
 > 
 
-> Q3: 黃色的資料格是甚麼?
+> Q3：黃色資料格代表什麼？
 > 
 
-> A: 黃色的值是整個 `wait_id` 行被重新定義的值。目前認為，採用以頁面來分割元素值的方法，能夠實現欄位的一對一對應，其效益高於直接以元素分割。這種做法的維護成本較低，並且在擴展欄位時，其增長複雜度為 O(n)，不會導致程式明顯的運行遲緩
+> A：黃色資料格是覆寫後的 `wait_id` 值。這份範例依頁面整理元素，讓資料欄位與頁面操作保持對應，方便後續維護和擴充。
 > 
 
 
-Test_Config.xlsx 下第一張資料表 Device&App_Config 設計為 Appium Driver 連線需要配置的Capability 可參考相關的 Appium 文件添加
+`Test_Config.xlsx` 的第一張工作表 `Device&App_Config` 用來保存 Appium Driver 連線所需的 Capabilities。若要新增設定，請先確認 Appium 文件中對應的 Capability 名稱和值。
 
 ![images/腳本架構_1.png](../images/腳本架構_5.png)
 
 ![images/腳本架構_1.png](../images/腳本架構_6.png)
 
-除了第一張資料表 (Device&App_Config) ，其他資料表負責添加測試數據，調用方式與上方雷同
+除 `Device&App_Config` 外，其餘工作表用來保存測試資料，載入方式與前述範例相同。
 
-紅字的部分為錯誤數據可以用來測試數據不合法的情況
+紅字欄位是刻意準備的錯誤資料，可用來確認系統如何處理不合法輸入。
 
 ![images/腳本架構_1.png](../images/腳本架構_7.png)
 
 ![images/腳本架構_1.png](../images/腳本架構_8.png)
 
-資料表有鎖定以保護勿編輯
+工作表已設為保護狀態，避免不小心修改資料。
 
 ![images/腳本架構_1.png](../images/腳本架構_9.png)
 
-### Step 2: Modularize Actions
+### 步驟 2：將操作拆分為模組
 
-根目錄下方 scripts 子資料夾，存放與 app 直接操作(連線)相關的模組
+`scripts/` 子資料夾位於專案根目錄，存放與 App 連線及 UI 操作相關的模組。
 
 ![images/腳本架構_1.png](../images/腳本架構_10.png)
 
-對 UI 測試來說，主要操作包含 
+UI 測試的主要操作可分為以下幾類：
 
-1. 連線裝置
-2. 定位
-3. 定位到後的操作 點擊,輸入,滑動
+1. 連接測試裝置。
+2. 定位 UI 元素。
+3. 操作已定位的元素，例如點擊、輸入和滑動。
 
-分別對應到五個模組，下方僅說明常用的 Function
+這些操作分別由不同模組負責。以下介紹常用函數及其參數。
 
 #### `setup_driver`
 
-> Appium Manager to handle device and app configuration and start / stop the driver
+> `setup_driver` 負責設定裝置與 App，並啟動或關閉 Appium Driver。
 > 
 
 ![images/腳本架構_1.png](../images/腳本架構_11.png)
 
-一般在使用時僅需注意 no_reset 變數即可
+一般情況下，使用時只需要留意 `no_reset` 變數。
 
 #### `location_elements.py`
 
-> 顯示等待跟定位相關
+> 此模組負責等待 UI 元素出現，並依指定條件定位元素。
 > 
 
-positioning_method_dict 用來管理使用的 “定位方法”
+`positioning_method_dict` 用來管理可使用的定位方法。
 
-conditions_dict 用來管理使用的 ”判斷元素狀態” 
+`conditions_dict` 用來管理元素狀態的判斷條件。
 
 ![images/腳本架構_1.png](../images/腳本架構_12.png)
 
-1. wait_for_locate 可以根據 XML 檔內元素的資訊來定位元素：
+`wait_for_locate` 會依照 XML 中的元素資訊定位目標元素。呼叫時至少需要提供兩個參數：定位方法和元素資訊。
 
-“wait_for_locate“ Function 最少要放兩個變數 1.定位方法 跟 2.元素資訊
+`condition` 預設檢查元素是否可見；`timeout` 預設為 10 秒。
 
-condition 變數預設為判斷元素是否可見
-
-timeout 變數預設為10秒內要定位到
-
-示範函數例如 :
+以下是函數範例：
 
 ![](../images/external/df68cfba0192.png)
 
 #### `click_action.py`
 
-> 點擊相關
+> 此模組封裝依元素定位或依座標點擊的操作。
 > 
 
 ![images/腳本架構_1.png](../images/腳本架構_13.png)
 
-1. click_by_locating 是根據定位元素點擊：
+`click_by_locating` 會先定位元素再執行點擊。至少需要提供定位方法、元素資訊和自訂按鈕名稱。
 
-“click_by_locating” Function 最少要放三個變數 1.定位方法 2.元素資訊 3.按鈕名稱(自定義)
+`condition` 預設檢查元素是否可點擊。
 
-condition 變數預設為判斷元素是否可點擊
-
-示範函數 :
+以下是函數範例：
 
 ![](../images/external/3b29e39d870b.png)
 
-1. click_by_percentage 是根據座標百分比點擊：
+`click_by_percentage` 會依畫面座標的百分比點擊。至少需要提供 X 軸百分比、Y 軸百分比和自訂按鈕名稱。
 
-“click_by_percentage” Function 最少要放三個變數 1. x 軸百分比 2. y 軸百分比 3.按鈕名稱(自定義)
+`click_times` 預設為 `1`。
 
-click_times 變數預設為點擊一次
-
-示範函數 :
+以下是函數範例：
 
 ![images/腳本架構_1.png](../images/腳本架構_14.png)
 
 #### `input_action.py`
 
-> 輸入相關
+> 此模組封裝文字和數字的輸入操作。
 > 
 
 ![images/腳本架構_1.png](../images/腳本架構_15.png)
@@ -187,122 +173,116 @@ click_times 變數預設為點擊一次
 <aside>
 ⚠️
 
-因為這是 UI 的自動化測試，所以在編寫腳本時不能放會被前端擋的值
+UI 自動化測試會經過前端驗證，因此測試資料應符合應用程式的輸入規則；若要測試錯誤處理，請使用專門設計的無效資料。
 
 </aside>
 
-1. input_by_send_key 是根據定位元素用 send_key 方法輸入（常用於輸入字串）：
+`input_by_send_key` 會先定位元素，再使用 `send_key` 輸入內容，通常用於文字欄位。
 
-“input_by_send_key” Function 最少要放三個變數 1.定位方法 2.元素資訊 3.輸入值(自定義)
-
-示範函數 :
+至少需要提供定位方法、元素資訊和輸入值。以下是函數範例：
 
 ![images/腳本架構_1.png](../images/腳本架構_16.png)
 
-1. input_with_keycode 是根據定位元素用 keycode 方法輸入（常用於輸入數字）：
+`input_with_keycode` 會先定位元素，再使用 Keycode 輸入內容，通常用於數字欄位。
 
-“input_with_keycode” Function 最少要放三個變數 1.定位方法 2.元素資訊 3.輸入值(自定義)
-
-示範函數 :
+至少需要提供定位方法、元素資訊和輸入值。以下是函數範例：
 
 ![images/腳本架構_1.png](../images/腳本架構_17.png)
 
 #### `swipe_action.py`
 
-> 頁面滑動相關
+> 此模組提供依照畫面座標百分比執行滑動的操作。
 > 
 
 ![images/腳本架構_1.png](../images/腳本架構_18.png)
 
-1. swipe_by_percentage 是根據頁面 x,y 百分比做滑動：
+`swipe_by_percentage` 會依畫面座標百分比執行滑動。呼叫時需提供起點和終點的 X、Y 百分比，共四個參數。
 
-“swipe_by_percentage” Function 最少要放四個變數 1.左上 x 百分比 2.左上 y 百分比 3.右下 x 百分比 4.右下 y 百分比
-
-示範函數 :
+以下是函數範例：
 
 ![images/腳本架構_1.png](../images/腳本架構_19.png)
 
-### Step 3: Modularize Pages
+### 步驟 3：依頁面拆分測試模組
 
-根目錄下方 pages 子資料夾區分商家端跟打工端，有各自 App 對應的頁面測試，並封包成模組
+`pages/` 子資料夾依商家端和打工端分開存放頁面操作，並將各頁面封裝成模組。
 
 ![images/腳本架構_1.png](../images/腳本架構_20.png)
 
 ![images/腳本架構_1.png](../images/腳本架構_21.png)
 
-例如 pages/employer/e3_login_page 代表商家端登入頁面的操作
+例如，`pages/employer/e3_login_page` 負責商家端登入頁面的操作。
 
 ![images/腳本架構_1.png](../images/腳本架構_22.png)
 
-1. 導入相關的頁面操作 
-2. 導入數據驅動並設定要調用哪一組數據
-3. 對頁面編寫測試
+1. 匯入需要的頁面操作模組。
+2. 載入資料驅動設定，選擇要使用的測試資料。
+3. 撰寫頁面測試流程。
 
-## Virtual Environment
+## 建立 Python 虛擬環境
 
 ---
 
-在根目錄下方建構 python 的虛擬環境
+在專案根目錄建立 Python 虛擬環境：
 
-1. 創建虛擬環境 : `python -m venv venv`
-2. 啟動虛擬環境
+1. 建立虛擬環境：`python -m venv venv`
+2. 啟動虛擬環境：
     
     **Windows** : `.\venv\Scripts\activate`
     
     **MacOS / Linux** : `source venv/bin/activate`
     
-3. 安裝依賴 : `pip install -r requirements.txt`
+3. 安裝相依套件：`pip install -r requirements.txt`
 
-## Run Tests
+## 執行測試
 
 ---
 
-根目錄下方 tests 子資料，存放主測試腳本，調用測試流程經過的頁面進行測試
+`tests/` 子資料夾位於專案根目錄，存放主測試腳本。每個腳本會依序呼叫需要測試的頁面模組。
 
-[`1.py`](http://1.py)是一個簡短測試腳本可以拿來調適腳本架構有沒有問題
+[`1.py`](http://1.py) 是簡短的範例腳本，可用來確認基本測試架構是否正常。
 
 ![images/腳本架構_1.png](../images/腳本架構_23.png)
 
-例如 tests/test_e1_reset 代表商家端啟動流程測試，包含
+例如，`tests/test_e1_reset` 代表商家端啟動流程測試，主要包含：
 
-1. 刪除快取重新啟動商家端 app
-2. 檢查 onboarding 頁面
-3. 檢查 規則功能
+1. 清除快取並重新啟動商家端 App。
+2. 檢查 onboarding 頁面。
+3. 檢查規則功能。
 
 ![images/腳本架構_1.png](../images/腳本架構_24.png)
 
-腳本架構為
+主測試腳本依序處理以下工作：
 
-1. 設置 log 等級
-2. 設置使用的測試數據
-3. 管理啟動 / 關閉 driver
-4. 測試頁面
+1. 設定 Log Level。
+2. 載入測試資料。
+3. 管理 Driver 的啟動與關閉。
+4. 執行頁面測試。
 
-可直接用 python 執行腳本 (示範執行 1.py)
+可直接使用 Python 執行腳本；下圖以 `1.py` 為例。
 
 ![images/腳本架構_1.png](../images/腳本架構_25.png)
 
-- 可下載 “[Vysor](https://www.vysor.io/)” 查看執行畫面
+- 可使用 [Vysor](https://www.vysor.io/) 查看裝置畫面。
     
     ![](../images/external/c80cc1bb11af.png)
     
 
-## Coding Style
+## 檢查程式碼風格
 
 ---
 
-安裝 VSCode 的 Python 插件 pylint，檢查代碼符合規範（建議分數在 8 分以上）。
+在 VS Code 安裝 Python 擴充功能和 Pylint，檢查程式碼風格。此專案建議 Pylint 分數達 8 分以上。
 
-執行 c:/Worky_UITest/utils/pylint_report.py 
+執行 `c:/Worky_UITest/utils/pylint_report.py` 產生檢查報告。
 
-TARGET_DIRECTORIES 為要分析的資料夾
+在 `TARGET_DIRECTORIES` 中指定要分析的資料夾。
 
 ![images/腳本架構_1.png](../images/腳本架構_26.png)
 
-結果存放於 `reports/pylint_report` 目錄：
+報告會存放在 `reports/pylint_report` 目錄，包含：
 
-1. 條形圖（png 檔案），顯示各文件 pylint 分數。
-2. 詳細報告（txt 檔案），記錄未達標的問題，例如：單行過長、缺少文檔說明等
+1. 長條圖（PNG），顯示各檔案的 Pylint 分數。
+2. 詳細報告（TXT），列出未達標項目，例如單行過長或缺少文件說明。
 
 ![images/腳本架構_1.png](../images/腳本架構_27.png)
 

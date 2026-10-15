@@ -1,139 +1,133 @@
-# Appium Test Automation
+# Appium 自動化測試環境建置
 
 ---
 
-> 介紹如何下載並設置必要的工具和軟體，確保編寫自動化測試腳本的環境配置完備
+> 本文整理建立 Android 自動化測試環境所需的工具，並說明各項工具的安裝與基本設定。
 > 
 
-## Appium Architecture
+## Appium 運作架構
 
 <aside>
 💡
 
-Def :
-Appium Server 透過 Webdriver 協議來驅動 Android 系統的 UI Automator 框架
+Appium 是一套行動應用程式自動化工具。測試腳本透過 Appium Client 向 Appium Server 發送 WebDriver 請求，再由 Server 呼叫 Android 的 UI Automator 等自動化框架操作裝置。
 
-Appium 啟動一個 Server (預設 port: 4723) 用來接口 Client 端的 rest 請求
+Appium Server 預設監聽連接埠 `4723`，負責接收並處理 Client 的請求。
 
 </aside>
 
 ![](../images/external/aa541f24e887.png)
 
-## Prerequisites
+## 安裝前準備
 
 ---
 
-- Python： 適合編寫自動化測試腳本
-- JDK： Appium 和 Android 模擬器需要 Java 環境來運行
-- Node.js： Node.js 提供了 Appium 的執行環境，同時支持 npm 來管理和安裝
-- Android SDK： 開發 Android 應用所需的工具 & 可以設置 Android 模擬器
-- Appium Server： 用於運行自動化測試腳本，並與設備進行交互
-- Appium Inspector： 幫助測試人員查看應用中的元素屬性的 GUI 工具
-- Appium-Python-Client：用於讓 Python 和 Appium Server 進行通信。
+- **Python**：撰寫自動化測試腳本。
+- **JDK**：提供 Appium 和 Android 模擬器所需的 Java 執行環境。
+- **Node.js**：執行 Appium，並透過 npm 管理相關套件。
+- **Android SDK**：提供 Android 開發與測試工具，也可用來建立模擬器。
+- **Appium Server**：接收測試腳本的請求，並與 Android 裝置互動。
+- **Appium Inspector**：以圖形介面檢視應用程式的 UI 元素與屬性。
+- **Appium-Python-Client**：讓 Python 測試腳本可以連接 Appium Server。
 
-## Installation Steps
+## 安裝步驟
 
 ---
 
-### VSCode
+### VS Code 編輯器
 
-> 選一個文字編輯器或是 IDE 用來撰寫腳本
+> 選擇一套文字編輯器或 IDE，用來撰寫和管理測試腳本。
 > 
 
-#### 1. Download [VS Code](https://code.visualstudio.com/download)
+#### 1. 下載 [VS Code](https://code.visualstudio.com/download)
 
-照畫面指示步驟下載即可
+依照下載頁面的指示完成安裝。
 
-下載完後進【延伸模組】安裝 Python
+安裝完成後，開啟 Extensions，搜尋並安裝 Python 擴充功能。
 
 ![](../images/external/d1e522d63d9e.png)
 
-#### 2. Create Your First Python File
+#### 2. 建立第一個 Python 檔案
 
-點擊 File 裡的 New Text File 新增一個文本
+在 **File → New Text File** 建立新檔案。
 
 ![](../images/external/945ada180d5f.png)
 
-新增完後先 Ctrl+S 儲存，並改附檔名為 .py
+按 `Ctrl+S` 儲存檔案，並將副檔名設為 `.py`。
 
 ![](../images/external/5615cae5601c.png)
 
-在第一行輸入在 Python 內導入 Appium 的語法:
+在檔案中加入以下程式碼，匯入 Appium 的 WebDriver：
 
 `from appium import webdriver`
 
 ![](../images/external/aa84f50261d7.png)
 
-此時程式應該會報錯，必須安裝 Python 相關軟體與套件
+如果此時編輯器顯示找不到 `appium` 模組，請先完成後續的 Python 與 Appium 套件安裝。
 
-### Java (JDK)
+### Java 開發工具（JDK）
 
-> 為了運行 Appium 和 Android 模擬器，首先需要安裝 JDK。
+> Appium 和 Android 模擬器需要 Java 執行環境，因此請先安裝 JDK。
 > 
 
-#### 1. Download [Java SDK](https://www.oracle.com/java/technologies/downloads/)
+#### 1. 下載 [Java SDK](https://www.oracle.com/java/technologies/downloads/)
 
-建議下載 JDK17 或 JDK21
-
-每3年就會有一個長期支援（LTS；Long-term support）的版本釋出
+建議選擇 JDK 17 或 JDK 21 等 LTS 版本。
 
 ![](../images/external/04782f108b35.png)
 
-開啟執行檔後點擊下一步 並安裝在預設路徑
+開啟安裝程式，依照畫面指示完成安裝。若沒有特殊需求，可使用預設安裝路徑。
 
 ![](../images/external/4a2d07817e49.png)
 
-預設為 C:Files(我之前安裝了兩個版本)
+安裝路徑通常位於 `C:\Program Files`。若電腦中安裝了多個 JDK，請先確認要使用的版本與路徑。
 
 ![](../images/external/367f8290434f.png)
 
-#### 2. Configure Environment Variables
+#### 2. 設定環境變數
 
-點擊 windows+R 開啟對話框並輸入 『sysdm.cpl』
+按 `Windows+R` 開啟「執行」，輸入 `sysdm.cpl`，再按 Enter。
 
 ![](../images/external/03bff3544f1b.png)
 
-點擊進階 點擊環境變數
+在「進階」頁面中選擇「環境變數」。
 
 ![](../images/external/36249b0e1100.png)
 
-在系統變數裡新增環境變數
+在「系統變數」區域新增變數：
 
 ![](../images/external/53b67a0ce2d2.png)
 
-變數名稱 輸入『JAVA_HOME』
+變數名稱設為 `JAVA_HOME`。
 
-變數值 輸入剛剛預設下載路徑 (e.g.C:Files)
+變數值設為 JDK 的安裝路徑，例如 `C:\Program Files\Java\jdk-17`。
 
 ![](../images/external/97c8560776f6.png)
 
-編輯Path變數
+接著編輯 `Path` 變數，加入 JDK 的 `bin` 目錄。
 
-新增剛剛的 JDK 路徑的下一層 bin 資料夾到 path 變數
-
-C:Files
-(我的window排版跑掉 這是Rapid Environment Editor的畫面)
+例如，若 JDK 安裝於 `C:\Program Files\Java\jdk-17`，請加入 `C:\Program Files\Java\jdk-17\bin`。
 
 ![](../images/external/7b16ad28a2b7.png)
 
 ![](../images/external/f3a4d7d9e84c.png)
 
-Path 變數設定完成，接下來點選『確定』就設定完成 Java 開發環境
+完成後按「確定」儲存設定。重新開啟終端機，讓新的環境變數生效。
 
-### Node.js
+### Node.js 執行環境
 
-> Appium 需要依賴 Node.js。
+> Appium 需要 Node.js 執行環境；npm 會隨 Node.js 一起安裝。
 > 
 
-#### 1. Install [Node.js](https://nodejs.org/en/)
+#### 1. 安裝 [Node.js](https://nodejs.org/en/)
 
-建議選擇最新的 LTS 版本安裝 如圖片中的 v20.17.0(LTS)
+建議安裝 Node.js 的 LTS 版本。圖中使用的是 `v20.17.0`。
 
 ![](../images/external/fa2f25c14b74.png)
 
-預設安裝路徑 勾選安裝必要的工具
+安裝時可保留預設路徑，並依照畫面提示安裝必要工具。
 
-Chocolatey：Windows 的套件管理工具，它簡化了 Python 和其他開發工具的安裝和管理。
+其中的 Chocolatey 是 Windows 套件管理工具，可協助安裝 Python 等開發工具。
 
 ![](../images/external/8f4b9eb51202.png)
 
@@ -143,31 +137,25 @@ Chocolatey：Windows 的套件管理工具，它簡化了 Python 和其他開發
 
 ![](../images/external/054ef92d95b4.png)
 
-#### 2. Configure Environment Variables
+#### 2. 設定環境變數
 
-安裝完成會自動添加 node.js 及 npm 的路徑到環境
+安裝程式通常會將 Node.js 和 npm 加入系統的 `Path`。
 
-可以點擊 windows 輸入 『cmd』 叫出命令提示字元
+開啟命令提示字元（按 Windows 鍵並輸入 `cmd`）。
 
-輸入 `echo %PATH:;=&echo.%` 查看是否有 npm 跟 node
+執行 `echo %PATH:;=&echo.%`，確認輸出包含 Node.js 和 npm 的路徑。
 
-npm 是 node 的套件管理系統會預設安裝
+Node.js 安裝程式會一併安裝 npm，供後續管理 Appium 套件。
 
 ![](../images/external/6362e72da959.png)
 
-#### 3. Verify the Installation
+#### 3. 確認安裝結果
 
-在 cmd 中分別輸入 `node -v` 和 `npm -v` 確認版本
-
-檢查是否可以正確運行
+在命令提示字元中分別執行 `node -v` 和 `npm -v`。若都能顯示版本號，代表 Node.js 和 npm 已可使用。
 
 ![](../images/external/8e36f0153c78.png)
 
-如果 cmd 回傳 `'node'不是內部或外部...`之類的訊息
-
-檢查環境變數是否正確依圖片步驟至 path 變數添加 node.js 及 npm 的路徑
-
-或是可能是封包時資料遺漏可以至 step1 重新下載
+如果命令提示字元顯示找不到 `node`，請先確認 `Path` 中已包含 Node.js 安裝路徑。若安裝檔案不完整，請重新執行安裝程式。
 
 ![](../images/external/6f7c6fa20af9.png)
 
@@ -175,82 +163,78 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/15b320e0d29f.png)
 
-### Android SDK
+### Android SDK 工具
 
-> 開發和測試 Android 應用所需的工具和資源。
+> Android SDK 提供開發與測試 Android 應用所需的工具，也包含管理模擬器的功能。
 > 
 
-#### 1. Install [Android Studio](https://developer.android.com/studio?hl=zh-tw)
+#### 1. 安裝 [Android Studio](https://developer.android.com/studio?hl=zh-tw)
 
-建議安裝 如果習慣 cli 操作或希望保持輕量級環境可以略過
+若只使用命令列工具，或希望維持較精簡的環境，可以不安裝 Android Studio，改為單獨安裝 Android SDK 工具。
 
 ![](../images/external/684732ad65c7.png)
 
 ![](../images/external/f19cb9f77171.png)
 
-預設安裝路徑 C:FilesStudio
-
-如果需要大量開發則不建議安裝在系統槽( e.g.更改路徑為D槽 ) 易造成系統槽過載
+安裝程式會顯示預設安裝路徑。若系統槽空間有限，可將 Android Studio 安裝到其他磁碟，例如 `D:`。
 
 ![](../images/external/63ce3363c598.png)
 
 ![](../images/external/2db313bfbf11.png)
 
-在安裝過程中，選擇安裝 Android SDK 和 SDK 管理工具（SDK Manager），確保這些工具與 Android Studio 一起安裝。
+安裝時請選擇 Android SDK 和 SDK Manager，並確認相關工具一併安裝。
 
 ![](../images/external/17edc1dc397b.png)
 
-如果有需要虛擬機，可以勾選
+如果需要使用 Android 模擬器，請一併安裝 Android Virtual Device（AVD）相關元件。
 
 ![](../images/external/2f20ea8ec586.png)
 
-#### 2. Install SDK Tools
+#### 2. 安裝 SDK 工具
 
-下載完打開 Android studio
-
-可以新增新的 project
+安裝完成後開啟 Android Studio。若尚未建立專案，可先新增空白專案，再開啟 SDK Manager。
 
 ![](../images/external/6e3efaefb25d.png)
 
-頁面的右上跟左上可以找到 setting 或是 SDK Manager
+SDK Manager 通常可從工具列或設定選單開啟；不同版本的 Android Studio，選單位置可能略有不同。
 
 ![](../images/external/4eaad2ff5224.png)
 
-配置需要的 Android OS 版本
+在 SDK Platforms 頁面選取測試所需的 Android 版本。
 
 ![](../images/external/af563545a7ae.png)
 
 配置 SDK Tool
 
-* Android SDK Build-Tools：用於編譯 Android 應用的核心工具。
+* Android SDK Build-Tools：編譯 Android 應用所需的工具。
 
-* Android SDK Platform-Tools：包含 adb 和 fastboot，這些是測試和管理 Android 設備的核心工具。
+* Android SDK Platform-Tools：包含 `adb` 和 `fastboot`，用於測試及管理 Android 裝置。
 
-* Android Emulator（如果你需要使用模擬器）。
+* Android Emulator：需要使用模擬器時安裝。
 
-* Android SDK Tools：SDK 管理工具集，包含調試和開發的基本工具。
+* Android SDK Tools：包含 SDK 管理、除錯與開發所需的工具。
 
 ![](../images/external/35625905f6ec.png)
 
-#### 3. Configure Environment Variables
+#### 3. 設定環境變數
 
-新增 Android SDK 的安裝目錄到系統變量
+將 Android SDK 的安裝目錄加入系統環境變數。
 
-創建一個名為 ANDROID_HOME 的變量，其值設置為 Android SDK 的安裝目錄。通常這個路徑類似於：
+新增名為 `ANDROID_HOME` 的變數，值設為 SDK 路徑；實際路徑可在 SDK Manager 中查看。
 
 ![](../images/external/63331b63e027.png)
 
 ![](../images/external/8adc42593a6f.png)
 
-添加下載的 Tool 路徑到 path 變數裡
+將 SDK 的 `platform-tools` 等工具目錄加入 `Path`，讓命令提示字元可以直接執行相關指令。
 
 ![](../images/external/0960bdea48e5.png)
 
-#### 4. Verify the Installation
+#### 4. 確認安裝結果
 
-在任何命令提示字元( e.g.cmd )輸入 `adb devices`
+開啟命令提示字元並執行 `adb devices`。
 
-回傳如圖表示adb工具已正確安裝
+若指令能正常回應，表示 `adb` 已安裝並可從 `Path` 執行。
 
 ![](../images/external/0cd248b3bddd.png)
 
@@ -259,11 +243,9 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/217710c6db37.png)
 
-#### 5. Check the Environment
+#### 5. 檢查 Appium 執行環境
 
-用 npm 安裝 appium-doctor
-
-可以用appium-doctor指令快速檢查appium的環境設定問題
+使用 npm 安裝 `appium-doctor`，再執行該工具檢查 Appium 環境設定。
 
 `npm install -g appium-doctor`
 
@@ -271,14 +253,14 @@ npm 是 node 的套件管理系統會預設安裝
 
 第一段necessary(必要的)不能有X
 
-### Appium Server
+### Appium Server 伺服器
 
-> 介紹如何通過 npm 安裝 Appium。
+> Appium Server 可透過 npm 安裝；若需要圖形介面，也可安裝 Appium Server GUI。
 > 
 
-#### 1. Install [Appium Server GUI](https://github.com/appium/appium-desktop/releases/tag/v1.6.3)
+#### 1. 安裝 [Appium Server GUI](https://github.com/appium/appium-desktop/releases/tag/v1.6.3)
 
-如果不用 GUI 可以略過
+若不需要圖形介面，可略過 GUI 安裝，直接使用 npm 安裝 Appium。
 
 ![](../images/external/71a9a334ff9b.png)
 
@@ -286,74 +268,70 @@ npm 是 node 的套件管理系統會預設安裝
 
 ![](../images/external/e35d155cc38d.png)
 
-也可透過 npm 安裝 Appium
+在命令提示字元中執行以下指令，以 npm 全域安裝 Appium：
 
-在任何命令提示字元( e.g.cmd )輸入 `npm install -g appium`
+`npm install -g appium`
 
 ![](../images/external/31d7e4d16bdf.png)
 
-#### 2. Verify the Installation
+#### 2. 確認安裝結果
 
-輸入 `appium -v` 確認版本
-
-檢查是否可以正確運行
+執行 `appium -v` 查看版本。若能顯示版本號，代表 Appium 已安裝完成。
 
 ![](../images/external/cca12de86294.png)
 
-#### 3-1. Configure Server Settings
+#### 3-1. 設定伺服器參數
 
-Appium Desktop: 打開下載的 GUI 介面
+開啟 Appium Server GUI，並進入 **Advanced** 設定頁面。
 
 ![](../images/external/33dccfdac798.png)
 
-可以在 Advanced 中設置伺服器詳細訊息、端口號、日誌級別、CORS設誌等
+在此頁面可設定伺服器位址、連接埠、Log Level 和 CORS 等選項。
 
 ![](../images/external/33823a7666ff.png)
 
-* - [ ] Server Address (伺服器地址)：
+* - [ ] Server Address：
 
-默認值是 0.0.0.0 相當於本機 IP 127.0.0.1 或 Localhost，維持預設即可。
+預設值為 `0.0.0.0`。若只在本機執行測試，可維持預設設定。
 
-* - [ ] Server Port (伺服器端口)：
+* - [ ] Server Port：
 
-默認值是 4723，你可以根據需要更改這個端口，目前維持預設即可。
+預設連接埠為 `4723`。若沒有連接埠衝突，可維持預設值。
 
-* - [ ] Log Level (日誌級別)：
+* - [ ] Log Level：
 
-默認設置為 debug，用於在控制台中顯示詳細的日誌。你可以根據需要將其設置為 info、error 或 warn，以減少日誌輸出。
+`debug` 會輸出較詳細的資訊。若不需要完整 Log，可依需求改為 `info`、`warn` 或 `error`。
 
 * - [X] Override Temp Path：
 
-默認值 /wd/hub，這個設置定義了 Appium 伺服器的 WebDriver 端點。大多數情況下，一般情況保持默認值即可，如果遇到問題可以加上 /wd/hub。
+此選項會覆寫 WebDriver Endpoint。只有 Client 端設定需要 `/wd/hub` 時才啟用，並確認 Client 與 Server 使用相同的 Endpoint。
 
 * - [X] Relaxed Security：
 
-勾選「Relaxed Security」允許 Appium 忽略一些安全限制，這通常在測試環境中使用，允許更多命令執行（如文件上傳等）。
+此選項會放寬 Appium 的安全限制。只有測試確實需要額外指令（例如檔案上傳）時才啟用。
 
 * - [X] Allow CORS：
 
-允許跨源資源共享（CORS），如果需要從不同的來源訪問 Appium 伺服器，這個選項應該保持勾選。
+只有在瀏覽器需要從不同來源存取 Appium Server 時，才需要啟用 CORS。
 
 ![](../images/external/b43ca361c976.png)
 
-設置完點擊 “Save As Preset” 之後方便直接從 Presets 選單調用設置
+設定完成後，選擇 **Save As Preset**，即可從 Presets 選單重複使用這組設定。
 
-#### 3-2. Start the Appium Server
+#### 3-2. 啟動 Appium Server
 
-cmd: 直接輸入`appium`
-
-會啟動appium伺服器 並綁定到127.0.0.1:4723（本地主機）和默認端口 4723
+也可以在命令提示字元執行 `appium` 啟動 Server。預設情況下，Server 會監聽本機的 `127.0.0.1:4723`。
 
 ![](../images/external/9d947d49cd40.png)
 
-### Appium Inspector
+### Appium Inspector 元素檢視器
 
-> 介紹如何安裝 Appium Inspector 工具來檢測 UI 元素。                                                       Appium Desktop 升級到 1.22 版本後，Server 跟 Inspector 已經分開
+> Appium Inspector 用於檢視應用程式的 UI 元素。Appium Desktop 1.22 起，Server 與 Inspector 已分為不同工具。
 > 
 
-#### 1. Install [Appium Inspector](https://github.com/appium/appium-inspector/releases)
+#### 1. 安裝 [Appium Inspector](https://github.com/appium/appium-inspector/releases)
 
-Windows 系統可下載最新版本的.exe檔
+在 Windows 上下載最新版本的 `.exe` 安裝檔，並依照畫面指示完成安裝。
 
 ![](../images/external/c30cf8586674.png)
 
@@ -361,28 +339,26 @@ Windows 系統可下載最新版本的.exe檔
 
 ![](../images/external/d46cc2798b33.png)
 
-#### 2. Configure Appium Inspector
+#### 2. 設定 Appium Inspector
 
 ![](../images/external/442a4f5744ab.png)
 
-可以如圖片中配置 Capability 並保存到 preset
+依照圖片設定所需的 Capabilities，並儲存為 Preset，方便後續重複使用。
 
 ![](../images/external/de7a8bcc75c5.png)
 
-上面四項 告訴Appium 測試在哪個平台和設備上運行
+前四項用來指定測試平台與裝置：
 
 ```
-* platfromName
+* platformName
 * deviceName
 * platformVersion
 * automationName (選填)
 ```
 
-中間三項 是測試 apk 檔的路徑 跟 app 的相關包名
+中間三項用來指定 APK 路徑和應用程式資訊。可以從 APK 檔案或使用 ADB 指令查詢相關值。
 
-可以反編譯 apk 檔或是用 adb 指令查看
-
-appPackage 跟 appActivity 在 Appium2.0 版本後為了提升命名的辨識度 必須在這兩項前面加上前綴 告訴 appium 這兩項是 Android-specific 的 capabilities
+在 Appium 2 中，`appPackage` 和 `appActivity` 使用 Android 專屬 Capability 名稱，因此需加上 `appium:` 前綴：
 
 ```
 * app
@@ -390,76 +366,64 @@ appPackage 跟 appActivity 在 Appium2.0 版本後為了提升命名的辨識度
 * appActivity
 ```
 
-下面兩項 是 Session Capabilities 告訴 Appium 在啟動應用或進行測試時的行為
-
-例如最多等待秒數、啟動時 Reset 等
+以下兩項是 Session Capabilities，用來設定 Appium 啟動應用程式和維持 Session 的行為，例如逾時時間或是否重設應用程式：
 
 ```
 * newCommandTimeout
 * noReset
 ```
 
-### Appium_Python_Client
+### Appium Python Client
 
-> Appium 與腳本互動時 必須調用 Client 端和 Appium Server 進行通信(e.g.Appium_Python_Client)  而 Appium_Python_Client 用 pip 下載最不容易出錯
+> Python 測試腳本需要透過 Client 與 Appium Server 通訊。本文使用 `Appium-Python-Client`，並以 pip 安裝。
 > 
 
-#### 1. Download [Python](https://www.python.org/downloads/)
+#### 1. 下載 [Python](https://www.python.org/downloads/)
 
 ![](../images/external/0aeb57c813a7.png)
 
 ![](../images/external/140d2551f6ea.png)
 
-確認 pip 這格要勾選(通常下載 python 預設也會下載 pip)
+安裝時確認已選取 pip。Python 安裝程式通常也會一併安裝 pip。
 
 ![](../images/external/0f85be0fd6f5.png)
 
-安裝資料夾路徑選擇預設，如果有更改要額外確認環境變數
+若沒有特殊需求，可使用預設安裝路徑。若自行更改路徑，請確認 Python 和 pip 已加入 `Path`。
 
 ![](../images/external/1c06993aa723.png)
 
-這邊我是設置在 C:
+此範例將 Python 安裝在 `C:`。
 
 ![](../images/external/8235e7c4e889.png)
 
-我的 pip 放在 C:裡，所以 path 變數要加上這個路徑
+若 pip 安裝在其他位置，請將對應的 Python 與 Scripts 目錄加入 `Path`。
 
-#### 2. Select the Python Interpreter in VS Code
+#### 2. 在 VS Code 選擇 Python Interpreter
 
-回到 VSCode
-
-點擊 Ctrl+Shift+P 在命令面板輸入 python 選擇剛剛下載直譯器
+回到 VS Code，按 `Ctrl+Shift+P` 開啟命令面板，輸入 `Python: Select Interpreter`，再選擇剛安裝的 Python。
 
 ![](../images/external/37add5823061.png)
 
-這會影響腳本是用哪個 Python 版本做轉碼
+這項設定會決定 VS Code 執行腳本時使用的 Python 版本。若使用虛擬環境，也請在此選取對應的 Interpreter。
 
-python 是直譯式語言，編輯的每一行轉成電腦可理解的 Byte Code 去執行，這也會導致輸出結果較慢
+#### 3. 安裝 Appium-Python-Client
 
-#### 3. Install Appium-Python-Client
-
-cmd 輸入 `pip -V`
+在命令提示字元執行 `pip -V`，確認 pip 可正常使用。
 
 ![](../images/external/07510dc6afbd.png)
 
-確認 pip 是否安裝成功
-
-輸入 `pip install Appium-Python-Client`
-
-除了安裝Appium-Python-Client-2.11.0版外，也一併安裝了Selenium-4.23.1版。
+接著執行 `pip install Appium-Python-Client` 安裝 Client 套件。此範例安裝的是 Appium-Python-Client 2.11.0 和 Selenium 4.23.1。
 
 ![](../images/external/124d34c0fe99.png)
 
 ![](../images/external/c4cee62cd16c.png)
 
-#### 4. Check for Errors in VS Code
+#### 4. 確認 VS Code 沒有錯誤
 
-回到VSCode
-
-點擊 Ctrl+Shift+P 在命令面板輸入 Reload
+回到 VS Code，按 `Ctrl+Shift+P` 開啟命令面板，輸入 `Reload Window` 並重新載入視窗。
 
 ![](../images/external/3fe6372ed2f1.png)
 
-重整後應該無報錯
+重新載入後，確認匯入 Appium 的程式碼不再顯示錯誤。
 
 ![](../images/external/d6daf8f13b3c.png)

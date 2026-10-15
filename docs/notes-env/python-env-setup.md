@@ -1,26 +1,26 @@
-# Python Environment
+# Python 環境設定
 
 ---
 
-pip 下載 python requirement 相關插建時可能會碰到無法下載進 C:/Program Files 的問題
+使用 `pip` 安裝 `requirements.txt` 中的套件時，若安裝位置在 `C:/Program Files`，可能會因權限不足而失敗。
 
-會變成在 user 內部建立一個 Python 資料夾來放 site-packages
+此時 Python 可能會改在使用者目錄下建立 `site-packages`，並將套件安裝在該處。
 
 ![image.png](../images/Python 環境設定_1.png)
 
-可以手動刪掉路徑並用系統管理員開啟 cmd 來使用 `pip install requirement`
+如果需要將套件安裝到系統目錄，可以先移除使用者目錄中的舊套件，再以系統管理員身分開啟命令提示字元執行安裝。
 
 ![image.png](../images/Python 環境設定_2.png)
 
-pip 預設使用快取加快構建速度
+`pip` 預設會快取套件，以加快後續安裝。若要排除快取造成的問題，可以清除快取後重新安裝：
 
 ![image.png](../images/Python 環境設定_3.png)
 
-可以清除快取來重新構建
+```bash
+pip cache purge
+pip install --no-cache-dir -r requirements.txt
+```
 
-`pip cache purge
- pip install --no-cache-dir -r requirements.txt`
-
-可自己在 site-package 內新增 `.pth` 文檔
+若要額外加入模組搜尋路徑，可以在 `site-packages` 目錄中新增 `.pth` 檔案。
 
 ![image.png](../images/Python 環境設定_4.png)

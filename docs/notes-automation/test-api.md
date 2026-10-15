@@ -1,57 +1,55 @@
-# API Testing
+# API 測試與 Socket 資料管理
 
 ---
 
-> 利用 Socket 管理 Response 內的數據調用(e.g. Token)，在本機啟動多個終端
+> 本文示範如何使用本機 Socket Server 管理 API 測試流程中的共用資料，例如 Token。
 > 
 
-（至少一個 Server 與多個 Client）
+測試時至少需要一個 Server，並可由多個 Client 同時連線。
 
-1. 獨立運行一個終端作為 Server
-2. 執行測試腳本(Client)以發起 API 請求，並與 Server 進行交互
+1. 在一個終端中啟動 Server。
+2. 在其他終端執行測試腳本（Client），發送 API 請求並與 Server 交換資料。
 
-## Project Structure
+## 專案目錄結構
 
 ---
 
 Project/api
-├─ employer/            商家端 API
-├─ labor/                   打工端 API
-├─ test/                     測試多支 API 間交互
-├─ tools/                   封裝腳本內部邏輯 (e.g. Socket 傳遞、生成 Header)
-├─ *env.py*                  API 環境變數管理
-├─ start_server.py     模擬資料存儲的本地 Server
-└─ test_data.py         測試數據 (e.g. 註冊電話)
+├─ employer/          商家端 API
+├─ labor/             打工端 API
+├─ test/              多支 API 的串接測試
+├─ tools/             共用工具，例如 Socket 資料傳遞與 Header 產生
+├─ env.py             API 環境變數
+├─ start_server.py    本機模擬資料 Server
+└─ test_data.py       測試資料，例如註冊電話
 
-## Run Tests
+## 執行測試
 
 ---
 
-1. 開啟一個終端運行 `python -u "c:\Worky_UITest\api\start_server.py”`
+1. 開啟終端並啟動 Server：`python -u "c:\Worky_UITest\api\start_server.py”`。
 
 ![image.png](../images/API 測試_1.png)
 
-1. 檢查測試數據
+2. 確認測試資料的管理方式：
 
-測試多支 API 交互(主測試)的測試數據直接封裝在函數內部
+若主測試流程會串接多支 API，可直接在測試函數中準備所需資料。
 
-各別測試單支 API 時，測試數據可以建檔案(e.g. test_data)管理
+若要單獨測試某支 API，則可將測試資料放在獨立檔案中管理，例如 `test_data.py`。
 
 ![image.png](../images/API 測試_2.png)
 
 ![image.png](../images/API 測試_3.png)
 
-1. 執行結果會打印在終端
-
-可以查看後台 API LOG 來調適
+3. 執行測試後，結果會輸出至終端。若需要排查問題，可以查看後端 API Log。
 
 ![image.png](../images/API 測試_4.png)
 
-Server 內會顯示儲存跟提取的相關紀錄可以查看
+Server 也會記錄資料的寫入與讀取操作，方便確認 Client 和 Server 之間的資料交換是否如預期進行。
 
 ![image.png](../images/API 測試_5.png)
 
-## Socket Design
+## Socket 伺服器設計
 
 ---
 
@@ -60,27 +58,26 @@ Server 內會顯示儲存跟提取的相關紀錄可以查看
 <aside>
 💡
 
-1. 管理伺服器端口
-2. 管理提取/儲存函數的邏輯
+1. 管理伺服器的 IP 與連接埠。
+2. 封裝資料讀取與寫入的處理邏輯。
 </aside>
 
-伺服器初始化時綁定了指定的 IP（`localhost`）與埠號（`5000`），提供了支持多客戶端並發連線的基礎架構。伺服器通過 `SocketDataManager` 管理共享數據，允許多個 Client 端同時連接並訪問共享資源。
+Server 啟動時會綁定指定的 IP（`localhost`）和連接埠（`5000`），並提供多個 Client 同時連線的基礎架構。`SocketDataManager` 負責管理共用資料，讓 Client 可以透過 Socket 存取資料。
 
 ![image.png](../images/API 測試_6.png)
 
-- **`set_data` 函數**：由 Client 端調用，發送 `SET_DATA` 指令至伺服器，附帶標籤 (`tag`) 和數據內容 (`data`)。
-- **`handle_set_data` 函數**：由 Server 內部調用，負責處理伺服器收到的 `SET_DATA` 指令，將數據存入標籤對應的存儲空間。
+- **`set_data` 函數**：由 Client 呼叫，將 `SET_DATA` 指令、標籤（`tag`）和資料內容（`data`）傳送至 Server。
+- **`handle_set_data` 函數**：由 Server 呼叫，處理收到的 `SET_DATA` 指令，並將資料存入對應標籤的儲存空間。
 
 ![image.png](../images/API 測試_7.png)
 
-範例:
-Client 端將訪問憑證存儲為 `new_access_token`，並通過標籤 `labor_token` 進行分類管理，供後續查詢使用。
+例如，Client 可以將存取憑證存入 `new_access_token`，並以 `labor_token` 作為標籤，供後續測試查詢。
 
 
-在 `server_task` 內
+在 `server_task` 中，程式會依序完成以下工作：
 
-- 利用 `parse_command` 拆解為操作類型 (`action`)、標籤 (`tag`)、和數據 (`data`)。
-- 根據指令執行相應的數據操作（如 `SET_DATA` 或 `GET_DATA`），並將結果回傳至客戶端。
+- 使用 `parse_command` 將指令拆解為操作類型（`action`）、標籤（`tag`）和資料（`data`）。
+- 依照操作類型執行資料讀取或寫入（例如 `SET_DATA`、`GET_DATA`），再將結果回傳給 Client。
 
 ![image.png](../images/API 測試_9.png)
 
@@ -91,14 +88,13 @@ Client 端將訪問憑證存儲為 `new_access_token`，並通過標籤 `labor_t
 <aside>
 💡
 
-1. Server 啟動相關邏輯 
+1. 負責啟動 Server 並處理連線。
 </aside>
 
-`server_task` 函數主要負責伺服器的核心邏輯，包括根據 `SocketDataManager` 指定的 IP 和埠號來啟動伺服器，並處理客戶端的連線和數據傳遞。
-此伺服器採用 TCP 通訊協議 (`SOCK_STREAM`)，確保數據傳輸的可靠性。
+`server_task` 是 Server 的主要處理函數。它會使用 `SocketDataManager` 設定的 IP 和連接埠啟動服務，並處理 Client 連線與資料傳輸。此處使用 TCP（`SOCK_STREAM`）進行通訊。
 
 ![image.png](../images/API 測試_11.png)
 
-`start` 函數在子執行緒中啟動 `server_task`，避免阻塞主程式，允許主程式執行其他任務（如等待用戶輸入或執行測試腳本）。
+`start` 函數會在子執行緒中啟動 `server_task`，避免 Server 阻塞主程式。主程式因此仍可執行其他工作，例如等待使用者輸入或執行測試腳本。
 
 ![image.png](../images/API 測試_12.png)

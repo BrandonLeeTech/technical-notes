@@ -1,34 +1,31 @@
-# VirtualBox VM
+# 使用 VirtualBox 建立 Ubuntu 虛擬機
 
-> **在 Linux 內核下驅動 Docker 執行測試**，有兩種常見的做法
-1. **Windows** + Linux 雙系統啟動
-2. 虛擬機環境 (Linux 核心)
-雙系統要占用較多磁碟空間，且切換系統較複雜，下方說明 VM 設置
+> 若測試需要在 Linux 核心下執行 Docker，常見方式有兩種：安裝 Windows 和 Linux 雙系統，或使用 Linux 虛擬機。雙系統會占用較多磁碟空間，切換也較不方便，因此本文說明如何建立 VirtualBox VM。
 > 
 
 ---
 
 
-## Install VirtualBox
+## 安裝 VirtualBox
 
 ---
 
-> **VirtualBox** 是由 **Oracle** 開發的 **免費**、**開源** 的虛擬機軟體。 [Oracle VirtualBox](https://www.virtualbox.org/)
+> [VirtualBox](https://www.virtualbox.org/) 是 Oracle 開發的免費、開源虛擬化軟體。
 > 
 
-### 1. Download VirtualBox
+### 1. 下載 VirtualBox
 
-下載 VirtualBox 6.11 並安裝：[Download_Old_Builds_6_1 – Oracle VirtualBox](https://www.virtualbox.org/wiki/Download_Old_Builds_6_1)
+從 [Oracle VirtualBox 舊版下載頁](https://www.virtualbox.org/wiki/Download_Old_Builds_6_1) 下載 VirtualBox 6.1，並完成安裝。
 
 ![image.png](../images/VM_1.png)
 
-選擇 Windows hosts
+下載時選擇 **Windows hosts**。
 
- VirtualBox 7 跟現成 Linux OS Image 不相容
+這份筆記使用的預建 Linux 映像與 VirtualBox 7 有相容性問題，因此沿用 VirtualBox 6.1。
 
-### 2. Download the Ubuntu VDI Image
+### 2. 下載 Ubuntu VDI 映像
 
-下載 Ubuntu 20.04 LTS： [Ubuntu Virtual Machine Images for VirtualBox and VMware](https://www.osboxes.org/ubuntu/#google_vignette)
+從 [OSBoxes Ubuntu 虛擬機映像頁面](https://www.osboxes.org/ubuntu/#google_vignette) 下載 Ubuntu 20.04 LTS 映像。
 
 ![image.png](../images/VM_2.png)
 
@@ -38,35 +35,35 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
 
 下載的 VM 映像可能帶有預設登入資訊。首次登入後請立即更換密碼；不要以預設密碼連接公司或公開網路，也不要在虛擬機內放置正式環境憑證。
 
-解壓縮下載檔案得到建置好的 .VDI 檔
+解壓縮下載檔案，取得預先建置好的 `.VDI` 虛擬磁碟。
 
-### 3. Create a Virtual Machine
+### 3. 建立虛擬機
 
-啟動 VirtualBox 並新增機器 (新增完的機器會顯示在設置右邊，如下圖)
+啟動 VirtualBox 並建立新虛擬機。建立後，虛擬機會出現在管理員視窗的清單中。
 
 ![image.png](../images/VM_3.png)
 
-名稱跟資料夾可自由配置
+虛擬機名稱和儲存位置可依需求設定。
 
-類型跟版本需要選擇 Linux / Ubuntu (64bit)
+作業系統類型選擇 **Linux**，版本選擇 **Ubuntu (64-bit)**。
 
 ![image.png](../images/VM_4.png)
 
-記憶體空間可以設置為 8GB (最少要4GB)
+記憶體建議配置 8 GB，至少配置 4 GB。
 
 ![image.png](../images/VM_5.png)
 
-硬碟選擇剛剛的 VDI 檔
+建立硬碟時，選擇剛才解壓縮取得的 VDI 檔案。
 
 ![image.png](../images/VM_6.png)
 
-### 4. Configure the Virtual Machine
+### 4. 設定虛擬機
 
-點擊創建的 VM 的設定
+選取剛建立的 VM，開啟設定。
 
-點擊系統>處理器>啟用 Nested VT-x/AMD-V (該功能需要 VirtualBox 版本需 **6.1.36 以上**)
+前往 **系統 → 處理器**，啟用 **Nested VT-x/AMD-V**。此功能需要 VirtualBox 6.1.36 或更新版本。
 
-“Nested VT-x/AMD-V” 是嵌套虛擬化技術，允許在虛擬機內再運行另一個虛擬化工具(e.g. Docker)
+Nested VT-x/AMD-V 是嵌套虛擬化功能，可讓 VM 內再執行其他使用虛擬化技術的工具，例如 Docker。
 
 ![image.png](../images/VM_7.png)
 
@@ -77,85 +74,84 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
 
 </aside>
 
-> Q1: 為甚麼 Nested VT-x/AMD-V 反灰無法點擊?
+> Q1：為什麼 Nested VT-x/AMD-V 選項是灰色，無法啟用？
 > 
 
-> A: 確認宿主機內有無背景運行的虛擬化工具 (e.g. **Hyper-V**、VMware)
+> A：檢查宿主機是否有其他虛擬化工具正在執行，例如 **Hyper-V** 或 VMware。
 > 
 
-> Q2: 虛擬機內啟用嵌套導致效能變差怎麼辦?
+> Q2：啟用嵌套虛擬化後，VM 效能變差怎麼辦？
 > 
 
-> A: 增加虛擬機的 CPU 和 RAM 分配或減少背景運行程式
+> A：可增加分配給 VM 的 CPU 和記憶體，或關閉宿主機上不必要的背景程式。
 > 
 
-如果 host 機內有裝類似 WSL 等來運行 Linux 指令就預設一定會啟動 Hyper-V 虛擬化，即使停用 WSL，Hyper-V 的輕量級 Hypervisor 仍可能留在系統中，這是由於 Hyper-V 核心必須支援 WSL2。而 Hyper-V 核心在運行時佔用了虛擬化功能會導致其他虛擬化工具無法啟用 **Nested VT-x**。
+如果宿主機使用 WSL 2，Hyper-V Hypervisor 可能會持續啟用。即使關閉 WSL，系統仍可能保留 Hyper-V，因此其他虛擬化工具可能無法使用 Nested VT-x。可依照下方步驟檢查目前的 Hypervisor 狀態。
 
 ![螢幕擷取畫面 2024-12-18 091859.png](../images/VM_8.png)
 
 ![螢幕擷取畫面 2024-12-18 092009.png](../images/VM_9.png)
 
-用 admin 啟動 cmd 輸入 `systeminfo` 可以在下方看到偵測到 Hypervisor 功能啟用的提示
+以系統管理員身分開啟命令提示字元並執行 `systeminfo`，檢查輸出中是否顯示已偵測到 Hypervisor。
 
 ![image.png](../images/VM_10.png)
 
-輸入 `bcdedit /set hypervisorlaunchtype off` 來禁用 Hyper-V ，完全釋放虛擬化功能
+若要停用 Hyper-V，可執行 `bcdedit /set hypervisorlaunchtype off`。此變更會影響需要 Hyper-V 的功能。
 
 ![螢幕擷取畫面 2024-12-18 091912.png](../images/VM_11.png)
 
-重啟電腦讓系統級指令生效
+重新啟動電腦，讓設定生效。
 
-再次查看 `systeminfo` 可以在看到 Hyper-V 可在 VM 模式中擴充
+重新開機後再次執行 `systeminfo`，確認 Hypervisor 狀態已更新，再回到 VirtualBox 檢查 Nested VT-x 選項。
 
 ![image.png](../images/VM_12.png)
 
-可設定 VM 內 Nesr VT-x 功能
+確認宿主機設定後，即可在 VM 設定中啟用 Nested VT-x。
 
 ![image.png](../images/VM_13.png)
 
-#### Additional Settings
+#### 其他設定
 
-- (可需要時再做修改)
+- 以下設定可依需求調整：
     
     
     1. **一般**：
         
-        共用剪貼簿的位置跟功能。
+        設定共用剪貼簿的方向與功能。
         
     2. **系統**：
-        1. 我們下載的 OS 是存放在 vdi 內，透過 SATA 控制器掛載。因此優先運行硬碟。
-        2. RAM 分配過少可能導致虛擬機無法開機。
-        3. CPU 核心數可以根據虛擬機的任務需求進行調整。
+        1. 作業系統存放在 VDI 虛擬磁碟中，並透過 SATA 控制器掛載。請確認硬碟的啟動順序正確。
+        2. 記憶體配置過少可能導致 VM 無法啟動。
+        3. CPU 核心數可依 VM 的工作負載調整。
         
-        過高的設置會消耗宿主機資源，建議在資源允許範圍內合理設置。
+        CPU 和記憶體配置過高會影響宿主機效能，請依可用資源調整。
         
     3. **存放資訊**：
-        1. IDE 通常用於掛載 ISO 光碟映像檔(軟體)，Guest Additions ISO 用來解決共用剪貼簿的問題。
-        2. SATA 提供更好的效能，適合現代作業系統(Windows 7/10、Ubuntu)。
+        1. IDE 可用來掛載 ISO 光碟映像，例如 Guest Additions ISO；Guest Additions 可提供共用剪貼簿等功能。
+        2. SATA 適用於現代作業系統的虛擬磁碟，例如 Windows 或 Ubuntu。
         
-        透過 SATA 控制器掛載的 VDI 檔案，建議將其存放在固態硬碟（SSD）上，以提升虛擬機的效能和讀寫速度。
+        建議將透過 SATA 控制器掛載的 VDI 檔案存放在 SSD，以提升讀寫效能。
         
     4. **網路介面卡**：
-        1. **NAT 模式**：虛擬機透過宿主機的網路進行連線，但無法與區域網內其他設備直接通訊。
-        2. **橋接模式**：虛擬機直接連接到實體網路，能獲取獨立 IP 位址，適合需要與區域網內設備通訊的場景。但可能受網路管理限制。
+        1. **NAT 模式**：VM 透過宿主機連線到網路，但區域網內的其他設備通常無法直接連線到 VM。
+        2. **橋接模式**：VM 直接連接實體網路並取得自己的 IP，適合需要與區域網設備通訊的情境；是否可用仍受網路政策限制。
         
-        橋接模式碰到公司網路限制等問題，無法分享 IP 給虛擬機。
+        若公司網路限制橋接連線，或不允許 VM 取得 IP，請改用 NAT 模式。
         
-        因此這部份選擇預設 NAT 網路，並用 USB 直通技術將設備連接到虛擬機，繞過網路配置限制。
+        本環境使用預設的 NAT 網路，並透過 USB 直通將裝置連接到 VM。
         
     5. **USB**：
         
-        USB 3.0，你必須安裝 VirtualBox Extension Pack。
-        USB 直通設定使得同一個裝置在同一時間只能被一台機器使用。因此測試時需要在 Host 機 和 Guest 虛擬機 之間手動切換控制權限。
+        使用 USB 3.0 前，需安裝 VirtualBox Extension Pack。USB 直通時，一個裝置同一時間只能由一台機器使用；測試時需在 Host 和 Guest 之間切換裝置控制權。
         
     6. **共用資料夾**：
         
-        添加 host 機與 guess 機內調用資料的路徑，選用自動掛載。
+        設定 Host 與 Guest 共用的資料夾路徑，並啟用自動掛載。
         
-        共用資料夾建議分配一個乾淨的磁碟或資料夾給虛擬機使用，這樣可以有效隔離 Host 機與 Guest 機的測試資料，方便資源管理並避免測試時互相干擾。
+        建議為 VM 指定獨立的共用資料夾，方便管理測試資料，也能減少 Host 與 Guest 的檔案互相干擾。
         
     7. 結論：
-    UI 自動化測試是順序性執行的操作，一台設備在同一時間只能處理單一操作序列。因此，虛擬機建議設置為單核 CPU 運行，減少資源競爭，並透過 USB 直通技術 提高測試的穩定性與準確度。
+    UI 自動化測試通常依序操作裝置，同一台裝置同一時間只能執行一個操作流程。請依測試負載配置 VM 的 CPU，並透過 USB 直通連接裝置。
     
     ![image.png](../images/VM_14.png)
     
@@ -168,27 +164,27 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
     ![image.png](../images/VM_18.png)
     
 
-### 5. Add a User
+### 5. 新增使用者
 
-新增使用者前，請確認已更換映像檔的預設密碼。
+新增使用者前，請先確認已更換映像檔的預設密碼。
 
 ![image.png](../images/VM_20.png)
 
 ![image.png](../images/VM_21.png)
 
-進到主畫面後選擇 Settings > Users > Unlock 來解鎖新增使用者
+進入桌面後，開啟 **Settings → Users → Unlock**，解鎖使用者設定。
 
 ![image.png](../images/VM_22.png)
 
 ![image.png](../images/VM_23.png)
 
-點擊右上方的 Add User，並新增自己的使用者帳密
+點選右上方的 **Add User**，建立個人帳號。
 
 ![image.png](../images/VM_24.png)
 
 ![image.png](../images/VM_25.png)
 
-設定完成後，點擊右上角的開機鍵，切換帳號
+建立完成後，點選右上方的電源按鈕，切換至新帳號。
 
 ![image.png](../images/VM_26.png)
 
@@ -199,78 +195,78 @@ OSBoxes 網站列出的預設登入資訊如下。這是下載映像的共用預
 
 </aside>
 
-> Q1: 為甚麼啟動 VM 但是進到 initramfs 提示符?
+> Q1：為什麼 VM 啟動後會進入 `initramfs` 提示符？
 > 
 
-> A: 可能是 1. VDI 掛載硬碟路徑錯誤 或2. VDI UDID 名稱重複，重新生成 VDI 文件的 UDID 並重新掛載通常可以解決問題。
+> A：可能是 VDI 路徑錯誤，或 VDI 的 UUID 重複。請確認虛擬磁碟掛載位置；若 UUID 重複，重新產生 UUID 後再掛載。
 > 
 
 ![image.png](../images/VM_27.png)
 
-### 6. Install the Guest Additions ISO and VirtualBox Extension Pack
+### 6. 安裝 Guest Additions 與 VirtualBox Extension Pack
 
-> 解決解析度調整、共用剪貼簿、共用資料夾等問題
+> Guest Additions 可支援調整解析度、共用剪貼簿和共用資料夾等功能。
 > 
 
-點擊上方的裝置 > 插入 Guest Additions CD 映像
+在 VirtualBox 視窗上方選擇 **Devices → Insert Guest Additions CD Image**。
 
 ![image.png](../images/VM_28.png)
 
-會自動開始運行安裝，安裝結束會多出一個光碟機標示
+依照畫面提示完成安裝。安裝完成後，虛擬機中會出現 Guest Additions 光碟機。
 
 ![image.png](../images/VM_29.png)
 
 ![image.png](../images/VM_30.png)
 
-這時應該可以透過 檢視 > 虛擬桌面 調整解析度
+之後可透過 **View → Virtual Screen** 調整解析度。
 
 ![image.png](../images/VM_31.png)
 
-如果碰到找不到光碟機的問題會導致 Guest Additions 無法載入
+如果系統找不到光碟機，Guest Additions 安裝程式就無法啟動。
 
-這時需要去 VirtualBox 管理員頁面設定 VM，在存放位置新增一個虛擬光碟機後在重複上述操作
+請先在 VirtualBox 管理員中開啟 VM 設定，於儲存裝置新增虛擬光碟機，再重新執行上述安裝步驟。
 
 ![image.png](../images/VM_32.png)
 
-### 7. Configure Shared Folders
+### 7. 設定共用資料夾
 
-要讓資料能在 host 機與 guest 機能傳輸可以掛載共享資料夾功能
+若要在 Host 和 Guest 之間傳輸檔案，請設定共用資料夾。
 
-開啟一個 terminal 窗口，輸入
+先在 Guest 中開啟終端機，將目前使用者加入 `vboxsf` 群組：
 
 ```bash
 sudo usermod -aG vboxsf $USER
 ```
 
-先登出使用者，重新登入後輸入 `groups`查看有無包含 vboxsf 群組
+登出並重新登入後，執行 `groups`，確認輸出包含 `vboxsf` 群組。
 
 ![image.png](../images/VM_33.png)
 
 ![image.png](../images/VM_34.png)
 
-在機器資料夾內加入測試腳本的根目錄資料夾 
+接著在 VM 的共用資料夾設定中，加入測試腳本的專案根目錄。
 
-並打開 1.自動掛載 跟 2.設為永久 兩個選項
+勾選 **Auto-mount** 和 **Make Permanent**，讓共用資料夾在 VM 啟動時自動掛載。
 
 ![image.png](../images/VM_35.png)
 
 ![image.png](../images/VM_36.png)
 
-可以在 Files 內察看剛剛新增的資料夾
+完成後，可在檔案管理員中查看新增的共用資料夾。
 
 ![image.png](../images/VM_37.png)
 
-### 8. Configure Automatic Login and `sudo` Access
+### 8. 設定自動登入與 `sudo` 權限
 
-可以從 GUI 開啟 Automatic Login
+可在圖形介面中啟用 **Automatic Login**。
 
 ![image.png](../images/VM_38.png)
 
-或是透過 CLI 編輯 gdm3 設定檔
+也可以透過命令列編輯 GDM3 設定檔：
 
 `sudo nano /etc/gdm3/custom.conf`
 
-AutomaticLogin 改為登入的 “username”
+將 `AutomaticLogin` 設為要自動登入的使用者名稱。
 
 ![image.png](../images/VM_39.png)
 

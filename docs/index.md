@@ -1,29 +1,29 @@
-# QA Automation Notes: Appium, API Testing, Docker & CI/CD
+# 自動化測試筆記：Appium、API 測試、Docker 與 CI/CD
 
 > 💡 計畫 → 開發 → 持續整合 CI → 測試 → 部署 CD → 監控 → 反饋
 
-## Contents
+## 筆記目錄
 
-- Test Automation
-    - [Appium Test Automation](notes-automation/auto-framework.md)
-    - [Test Automation Architecture](notes-automation/auto-scripts-structure.md)
-    - [Test Reporting](notes-automation/test-log-report.md)
-    - [ADB Troubleshooting](notes-automation/test-adb.md)
-    - [API Testing](notes-automation/test-api.md)
-    - [Streamlit + PyInstaller](notes-automation/streamlit_pyinstaller_tutorial.md)
+- 測試自動化
+    - [Appium 自動化測試環境](notes-automation/auto-framework.md)
+    - [自動化測試腳本架構](notes-automation/auto-scripts-structure.md)
+    - [測試紀錄與報告](notes-automation/test-log-report.md)
+    - [ADB 疑難排解](notes-automation/test-adb.md)
+    - [API 測試](notes-automation/test-api.md)
+    - [Streamlit + PyInstaller 打包教學](notes-automation/streamlit_pyinstaller_tutorial.md)
 
-- Environment & Deployment
-    - [Docker](notes-env/docker-guide.md)
-    - [Python Environment](notes-env/python-env-setup.md)
-    - [VirtualBox VM](notes-env/vm-setup.md)
+- 環境與部署
+    - [Docker 測試環境](notes-env/docker-guide.md)
+    - [Python 環境設定](notes-env/python-env-setup.md)
+    - [VirtualBox 虛擬機設定](notes-env/vm-setup.md)
 
 - DevOps
-    - [GitLab Runner](notes-devops/gitlab-runner.md)
-    - [CI/CD Pipeline](notes-devops/ci-cd.md)
+    - [GitLab Runner 安裝與維護](notes-devops/gitlab-runner.md)
+    - [CI/CD 流程](notes-devops/ci-cd.md)
 
 ---
 
-## Toolchain Overview
+## 工具鏈總覽
 
 | 類別 | 工具 |
 |------|------|
@@ -36,7 +36,7 @@
 | 虛擬化工具 | VirtualBox、VM |
 
 
-## Common Challenges and Solutions
+## 常見問題與處理方式
 
 <details>
 <summary>❓ Q：可交互元素缺少 `id`</summary>
@@ -51,7 +51,7 @@
 </details>
 
 
-## Quick Start Guide
+## 快速開始
 
 1. ⚙️ 依各篇教學安裝 Python、Appium 與相關工具。
 2. 📚 從上方導覽選擇主題，依照步驟設定環境。

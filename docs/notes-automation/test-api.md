@@ -98,3 +98,36 @@ Server 啟動時會綁定指定的 IP（`localhost`）和連接埠（`5000`）�
 `start` 函數會在子執行緒中啟動 `server_task`，避免 Server 阻塞主程式。主程式因此仍可執行其他工作，例如等待使用者輸入或執行測試腳本。
 
 ![image.png](../images/API 測試_12.png)
+
+## 使用 Pydantic 驗證 API 回應
+
+若測試需要檢查 API 回應是否符合預期結構，可使用 Pydantic 定義資料模型。這比逐欄位手動取值更容易辨識缺少欄位、型別錯誤與格式不符等問題。
+
+安裝 Pydantic，並將相依套件加入專案的 `requirements.txt`：
+
+```bash
+pip install pydantic
+```
+
+```python
+from pydantic import BaseModel, Field
+
+
+class ProfileResponse(BaseModel):
+    user_id: int
+    display_name: str = Field(min_length=1)
+    is_active: bool
+```
+
+收到回應後，先確認 HTTP 狀態，再驗證 JSON：
+
+```python
+response.raise_for_status()
+profile = ProfileResponse.model_validate(response.json())
+
+assert profile.is_active is True
+```
+
+沒有預設值的欄位為必填。若欄位可以省略且值也可為空，請明確宣告型別和預設值，例如 `nickname: str | None = None`。
+
+Pydantic 預設會忽略模型未宣告的欄位。若需要在 API 增加欄位時立即讓測試失敗，可設定 `ConfigDict(extra="forbid")`；若 API 允許向前相容的額外欄位，則保留預設行為。應依 API 契約選擇嚴格程度，避免把相容性變更誤判為錯誤。

@@ -7,6 +7,8 @@
 - 測試自動化
     - [Appium 自動化測試環境](notes-automation/auto-framework.md)
     - [自動化測試腳本架構](notes-automation/auto-scripts-structure.md)
+    - [Pytest Fixture 初始化](notes-automation/pytest-fixture-initialization.md)
+    - [Pytest 平行 UI 測試](notes-automation/pytest-parallel-device-pool.md)
     - [測試紀錄與報告](notes-automation/test-log-report.md)
     - [ADB 疑難排解](notes-automation/test-adb.md)
     - [API 測試](notes-automation/test-api.md)

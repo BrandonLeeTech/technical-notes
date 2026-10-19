@@ -18,6 +18,7 @@
     - [Docker 測試環境](notes-env/docker-guide.md)
     - [Python 環境設定](notes-env/python-env-setup.md)
     - [VirtualBox 虛擬機設定](notes-env/vm-setup.md)
+    - [Xcode 27.1 iPhone Simulator 設定](notes-env/xcode27-iphone-simulator.md)
 
 - DevOps
     - [GitLab Runner 安裝與維護](notes-devops/gitlab-runner.md)

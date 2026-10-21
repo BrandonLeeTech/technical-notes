@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="340" viewBox="0 0 1120 340" role="img" aria-labelledby="title desc">
+  <title id="title">自動化測試監控資料流程</title>
+  <desc id="desc">pytest 將測試指標推送到 Pushgateway，Prometheus 定期抓取，Grafana 查詢並呈現資料。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="1120" height="340" rx="20" fill="#f8fafc"/>
+  <text x="48" y="58" fill="#0f172a" font-family="sans-serif" font-size="24" font-weight="700">測試監控資料流程</text>
+  <text x="48" y="88" fill="#475569" font-family="sans-serif" font-size="15">短生命週期的 pytest 工作推送 metrics，由 Prometheus 抓取並交給 Grafana 查詢</text>
+  <g font-family="sans-serif">
+    <rect x="48" y="142" width="220" height="124" rx="14" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="72" y="183" fill="#0f172a" font-size="21" font-weight="700">pytest</text>
+    <text x="72" y="213" fill="#475569" font-size="15">測試結果與耗時</text>
+    <text x="72" y="237" fill="#475569" font-size="15">prometheus_client</text>
+    <rect x="338" y="142" width="220" height="124" rx="14" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="362" y="183" fill="#0f172a" font-size="21" font-weight="700">Pushgateway</text>
+    <text x="362" y="213" fill="#475569" font-size="15">暫存批次工作指標</text>
+    <text x="362" y="237" fill="#475569" font-size="15">供 Prometheus 抓取</text>
+    <rect x="628" y="142" width="220" height="124" rx="14" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="652" y="183" fill="#0f172a" font-size="21" font-weight="700">Prometheus</text>
+    <text x="652" y="213" fill="#475569" font-size="15">定期 scrape</text>
+    <text x="652" y="237" fill="#475569" font-size="15">儲存時間序列</text>
+    <rect x="918" y="142" width="154" height="124" rx="14" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="942" y="183" fill="#0f172a" font-size="21" font-weight="700">Grafana</text>
+    <text x="942" y="213" fill="#475569" font-size="15">查詢與</text>
+    <text x="942" y="237" fill="#475569" font-size="15">視覺化</text>
+  </g>
+  <path d="M270 204H326" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="278" y="188" fill="#64748b" font-family="sans-serif" font-size="13">Push</text>
+  <path d="M560 204H616" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="565" y="188" fill="#64748b" font-family="sans-serif" font-size="13">Scrape</text>
+  <path d="M850 204H906" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="858" y="188" fill="#64748b" font-family="sans-serif" font-size="13">Query</text>
+</svg>

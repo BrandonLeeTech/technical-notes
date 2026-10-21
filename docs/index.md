@@ -23,6 +23,7 @@
 - DevOps
     - [GitLab Runner 安裝與維護](notes-devops/gitlab-runner.md)
     - [CI/CD 流程](notes-devops/ci-cd.md)
+    - [Prometheus 與 Grafana 測試監控](notes-devops/prometheus-grafana-test-monitoring.md)
 
 ---
 

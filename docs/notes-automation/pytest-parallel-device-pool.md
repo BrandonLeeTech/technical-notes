@@ -19,6 +19,28 @@ Device Pool 會在測試開始前分配一台可用裝置，並在測試結束�
 
 多個 CI Job 共用裝置時，Pool 需要用跨程序或跨主機的鎖定機制避免重複分配。等待裝置的逾時時間應依排程情境設定，並與單一測試的逾時區分開來。
 
+## Android 與 iOS 裝置池維運
+
+在 `hybris-sanity-for-hk` 中，Android 和 iOS 裝置池由 pytest 選項明確啟用。一般測試仍使用指定 fixture 的裝置；只有加入 `--android-device-pool` 或 `--ios-device-pool` 才會租用裝置。指定一台 include 裝置會直接選擇該裝置；多台 include 才會在指定候選裝置間租用。
+
+先以單一 worker 確認裝置和 Appium session 可用，再增加平行數量：
+
+```bash
+pytest tests/hk_sanity_android/hybris -n 1 -s --android-device-pool
+pytest tests/hk_sanity_iOS/hybris -n 1 -s --ios-device-pool
+```
+
+可用維護測試確認裝置 registry 與 Appium session：
+
+```bash
+pytest tests/maintenance/test_android_device_registry.py -s
+pytest tests/maintenance/test_ios_device_registry.py -s
+```
+
+本機 pool 啟動可能會清除候選裝置上的既有 Appium sessions 和過期 lease；執行前確認沒有其他工作正在使用這些裝置。多個 runner 若要共用裝置，應使用中央 lease service；本機檔案鎖只適用於共用同一鎖定目錄的 worker。中央模式需要 `DEVICE_LEASE_URL` 與 `DEVICE_LEASE_API_TOKEN`，不可退回本機鎖模式。
+
+裝置持續被占用時，先看 pytest pool 摘要與 `reports/logs/test.log`，確認候選裝置、Appium 狀態、session 清理結果和 lease 擁有者。不要在未確認 lease 擁有者前強制刪除 session；若 lease service 無法確認狀態，資源會保留以避免中斷仍在執行的測試。
+
 ## 避免共用測試資料互相污染
 
 裝置隔離和測試資料隔離是兩個不同問題。多個 Worker 即使使用不同裝置，若同時操作同一個測試帳號，仍可能互相修改購物車、登入狀態或其他共用資料。

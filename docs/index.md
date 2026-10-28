@@ -9,9 +9,12 @@
     - [自動化測試腳本架構](notes-automation/auto-scripts-structure.md)
     - [Pytest Fixture 初始化](notes-automation/pytest-fixture-initialization.md)
     - [Pytest 平行 UI 測試](notes-automation/pytest-parallel-device-pool.md)
+    - [Appium 元素與 XML 排查](notes-automation/appium-xml-element-debugging.md)
     - [測試紀錄與報告](notes-automation/test-log-report.md)
     - [ADB 疑難排解](notes-automation/test-adb.md)
     - [API 測試](notes-automation/test-api.md)
+    - [API 準備測試資料](notes-automation/api-test-data-workflows.md)
+    - [PCR 執行與排查索引](notes-automation/pcr-execution-troubleshooting.md)
     - [Streamlit + PyInstaller 打包教學](notes-automation/streamlit_pyinstaller_tutorial.md)
 
 - 環境與部署
